@@ -9,6 +9,7 @@ import TaskManagementSystem.service.ChatService;
 
 @RestController
 @RequestMapping("/chat")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ChatController {
 	@Autowired
 	ChatService chatServ;

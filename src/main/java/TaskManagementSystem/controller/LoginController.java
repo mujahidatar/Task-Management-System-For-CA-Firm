@@ -9,6 +9,7 @@ import TaskManagementSystem.service.LoginService;
 
 @RestController
 @RequestMapping("/login")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 	@Autowired
 	LoginService logServ;
