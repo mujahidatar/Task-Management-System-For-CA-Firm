@@ -11,16 +11,19 @@ public class Client {
 	private String clientEmail;
 	private long clientContact;
 	private String clientAddress;
+	private String clientPassword;
 	
 	public Client() {}
 	
-	public Client(int clientId, String clientName, String clientEmail, long clientContact, String clientAddress) {
+	public Client(int clientId, String clientName, String clientEmail, long clientContact, String clientAddress,
+			String clientPassword) {
 		super();
 		this.clientId = clientId;
 		this.clientName = clientName;
 		this.clientEmail = clientEmail;
 		this.clientContact = clientContact;
 		this.clientAddress = clientAddress;
+		this.clientPassword = clientPassword;
 	}
 
 	public int getClientId() {
@@ -61,6 +64,14 @@ public class Client {
 
 	public void setClientAddress(String clientAddress) {
 		this.clientAddress = clientAddress;
+	}
+
+	public String getClientPassword() {
+		return clientPassword;
+	}
+
+	public void setClientPassword(String clientPassword) {
+		this.clientPassword = clientPassword;
 	}
 	
 }

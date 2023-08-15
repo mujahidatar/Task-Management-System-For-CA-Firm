@@ -27,7 +27,7 @@ public class ClientController {
 	@PostMapping
 	public ResponseEntity<?> addClient(@RequestBody Client theCli){
 		Client cli = this.cliServ.save(theCli);
-		System.out.println("client id "+cli.getClientId());
+		//System.out.println("client id "+cli.getClientId());
 		return ResponseEntity.ok(cli);
 	}
 	@PostMapping("/{id}")

@@ -29,6 +29,13 @@ public class TaskServiceImpl implements TaskService{
 
 	@Override
 	public Task save(Task theTask) {
+		Task task = taskRepo.findFirstByOrderByTaskIdDesc();
+		if(theTask.getTaskId()==0) {
+			if(task!=null)
+				theTask.setTaskId(task.getTaskId()+1);
+			else
+				theTask.setTaskId(100);
+		}
 		return taskRepo.save(theTask);
 	}
 

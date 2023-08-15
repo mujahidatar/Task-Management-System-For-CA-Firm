@@ -3,6 +3,8 @@ package TaskManagementSystem.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import TaskManagementSystem.enums.Roles;
+
 
 @Document(collection="employees")
 public class Employee {
@@ -12,12 +14,14 @@ public class Employee {
 	private String empEmail;
 	private long empContact;
 	private String empAddress;
-	private String empRole;
+	private Roles empRole;
 	private int managerId;
+	private String empPassword;
 	
 	public Employee() {}
 	
-	public Employee(int empId, String empName, String empEmail, long empContact, String empAddress, String empRole, int managerId) 
+	public Employee(int empId, String empName, String empEmail, long empContact, String empAddress, Roles empRole, int managerId,
+					String empPassword) 
 	{
 		super();
 		this.empId = empId;
@@ -27,6 +31,7 @@ public class Employee {
 		this.empAddress = empAddress;
 		this.empRole = empRole;
 		this.managerId = managerId;
+		this.empPassword = empPassword;
 	}
 
 	public int getEmpId() {
@@ -69,11 +74,11 @@ public class Employee {
 		this.empAddress = empAddress;
 	}
 
-	public String getEmpRole() {
+	public Roles getEmpRole() {
 		return empRole;
 	}
 
-	public void setEmpRole(String empRole) {
+	public void setEmpRole(Roles empRole) {
 		this.empRole = empRole;
 	}
 
@@ -85,5 +90,12 @@ public class Employee {
 		this.managerId = managerId;
 	}
 	
-	
+	public String getEmpPassword() {
+		return empPassword;
+	}
+
+	public void setEmpPassword(String empPassword) {
+		this.empPassword = empPassword;
+	}
+
 }
