@@ -1,4 +1,4 @@
-package TaskManagementSystem.dao;
+package TaskManagementSystem.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import TaskManagementSystem.entity.Task;

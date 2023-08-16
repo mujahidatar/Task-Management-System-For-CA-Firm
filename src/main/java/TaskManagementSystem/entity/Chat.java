@@ -2,12 +2,17 @@ package TaskManagementSystem.entity;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "chats")
 public class Chat {
+	@NotNull(message = "Task Id is required")
 	private int taskId;
+	@NotNull(message = "Sender Id is required")
 	private int senderId;
+	@NotNull(message = "message is required")
 	private String msg;
 	private LocalDateTime timeStamp;
 	

@@ -1,12 +1,17 @@
 package TaskManagementSystem.entity;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import TaskManagementSystem.enums.Roles;
 
 @Document(collection = "logins")
 public class Login {
+	@Email(message = "Kindly enter valid email address" )
 	private String username;
+	@Size(min = 8,max = 16,message = "Password must be between 8-16 character")
 	private String password;
 	private Roles role;
 	

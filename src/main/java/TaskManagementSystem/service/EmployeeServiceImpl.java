@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import TaskManagementSystem.dao.EmployeeRepository;
-import TaskManagementSystem.dao.LoginRepository;
 import TaskManagementSystem.entity.Employee;
 import TaskManagementSystem.entity.Login;
+import TaskManagementSystem.enums.Roles;
+import TaskManagementSystem.repository.EmployeeRepository;
+import TaskManagementSystem.repository.LoginRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -41,6 +42,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 			else
 				theEmp.setEmpId(100);
 		}
+		if(theEmp.getEmpRole()==Roles.ADMIN)
+			{theEmp.setEmpId(0);theEmp.setManagerId(-1);}
 		Login logCheck = logRepo.findByUsername(theEmp.getEmpEmail());
 		if(logCheck!=null)
 			return null;

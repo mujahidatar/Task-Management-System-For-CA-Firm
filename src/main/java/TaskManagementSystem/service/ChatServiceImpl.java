@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import TaskManagementSystem.dao.ChatRepository;
 import TaskManagementSystem.entity.Chat;
+import TaskManagementSystem.repository.ChatRepository;
 
 @Service
 public class ChatServiceImpl implements ChatService{

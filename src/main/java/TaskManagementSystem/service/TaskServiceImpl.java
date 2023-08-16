@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import TaskManagementSystem.dao.TaskRepository;
 import TaskManagementSystem.entity.Task;
+import TaskManagementSystem.repository.TaskRepository;
 
 @Service
 public class TaskServiceImpl implements TaskService{

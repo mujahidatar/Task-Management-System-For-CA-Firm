@@ -1,5 +1,9 @@
 package TaskManagementSystem.entity;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,10 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Client {
 	@Id
 	private int clientId;
+	@NotNull(message = "Client name is required")
 	private String clientName;
+	@Email(message = "Kindly enter valid email address")
 	private String clientEmail;
 	private long clientContact;
 	private String clientAddress;
+	@Size(min = 8,max = 16,message = "Password must be between 8-16 character")
 	private String clientPassword;
 	
 	public Client() {}

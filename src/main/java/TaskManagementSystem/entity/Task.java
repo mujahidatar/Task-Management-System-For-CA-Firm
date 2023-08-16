@@ -1,5 +1,8 @@
 package TaskManagementSystem.entity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +12,9 @@ import TaskManagementSystem.enums.Status;
 public class Task {
 	@Id
 	private int taskId;
+	@NotNull(message = "Task title is required")
 	private String title;
+	@NotNull@Size(max = 100,message = "maximum description length is 100 character")
 	private String desc;
 	private int clientId;
 	private int managerId;

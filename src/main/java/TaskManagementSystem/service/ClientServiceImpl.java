@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import TaskManagementSystem.dao.ClientRepository;
-import TaskManagementSystem.dao.LoginRepository;
 import TaskManagementSystem.entity.Client;
 import TaskManagementSystem.entity.Login;
 import TaskManagementSystem.enums.Roles;
+import TaskManagementSystem.repository.ClientRepository;
+import TaskManagementSystem.repository.LoginRepository;
 
 @Service
 public class ClientServiceImpl implements ClientService{

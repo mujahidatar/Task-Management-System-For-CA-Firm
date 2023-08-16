@@ -1,4 +1,4 @@
-package TaskManagementSystem.dao;
+package TaskManagementSystem.repository;
 
 import java.util.List;
 

@@ -1,5 +1,9 @@
 package TaskManagementSystem.entity;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,12 +14,16 @@ import TaskManagementSystem.enums.Roles;
 public class Employee {
 	@Id
 	private int empId;
+	@NotNull(message = "Employee name is required")
 	private String empName;
+	@Email(message = "Kindly enter valid email address" )
 	private String empEmail;
 	private long empContact;
 	private String empAddress;
+	@NotNull(message = "Employee role is required")
 	private Roles empRole;
 	private int managerId;
+	@Size(min = 8,max = 16,message = "Password must be between 8-16 character")
 	private String empPassword;
 	
 	public Employee() {}
