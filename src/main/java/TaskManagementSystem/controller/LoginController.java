@@ -14,12 +14,10 @@ public class LoginController {
 	@Autowired
 	LoginService logServ;
 	
-	@PostMapping("/check")
-	public boolean checkCredentials(@RequestBody Login theLog) {
+	@PostMapping("/authenticate")
+	public ResponseEntity<?> checkCredentials(@RequestBody Login theLog) {
 		Login log = this.logServ.findByKey(theLog.getUsername(), theLog.getPassword());
-		if(log!=null)
-			return true;
-		return false;
+		return ResponseEntity.ok(log);
 	}
 	
 	@PostMapping
