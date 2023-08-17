@@ -5,9 +5,10 @@ import java.util.List;
 import TaskManagementSystem.entity.Client;
 
 public interface ClientService {
-	public List<Client> findAll();
-	public Client findById(int theId);
-	public Client save(Client thecli);
-	public void deleteById(int theId);
-	public long getCount();
+	List<Client> findAll();
+	Client findById(int theId);
+	Client save(Client thecli);
+	void deleteById(int theId);
+	long getCount();
+	Client findByEmail(String email);
 }

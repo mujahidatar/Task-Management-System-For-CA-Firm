@@ -12,4 +12,5 @@ public interface EmployeeService {
 	public void deleteById(int theId);
 	public long getCount();
 	List<Employee> findByManagerId(int theId);
+	Employee findByEmail(String email);
 }

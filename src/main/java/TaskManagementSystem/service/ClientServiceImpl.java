@@ -64,4 +64,9 @@ public class ClientServiceImpl implements ClientService{
 	public long getCount() {
 		return cliRepo.count();
 	}
+
+	@Override
+	public Client findByEmail(String email) {
+		return cliRepo.findByClientEmail(email);
+	}
 }

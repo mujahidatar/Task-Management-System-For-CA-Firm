@@ -11,4 +11,6 @@ public interface EmployeeRepository extends MongoRepository<Employee, Integer>{
 	Employee findFirstByOrderByEmpIdDesc();
 	
 	List<Employee> findByManagerId(int id);
+	
+	Employee findByEmpEmail(String email);
 }

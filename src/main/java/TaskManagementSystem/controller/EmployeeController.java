@@ -59,5 +59,10 @@ public class EmployeeController {
 	public ResponseEntity<?> getEmpByManagerId(@PathVariable int id) {
 		return ResponseEntity.ok(empServ.findByManagerId(id));
 	}
+	
+	@PostMapping("/mail/{email}")
+	public ResponseEntity<?> getEmpByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(empServ.findByEmail(email));
+	}
 		
 }

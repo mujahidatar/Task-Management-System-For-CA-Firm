@@ -38,13 +38,17 @@ public class ClientController {
 
 	@PostMapping("/{id}")
 	public ResponseEntity<?> getClient(@PathVariable int id) {
-		Client cli = this.cliServ.findById(id);
-		return ResponseEntity.ok(cli);
+		return ResponseEntity.ok(cliServ.findById(id));
 	}
 
 	@DeleteMapping("/{id}")
 	public String deleteClient(@PathVariable int id) {
 		this.cliServ.deleteById(id);
 		return "Document Deleted";
+	}
+	
+	@PostMapping("mail/{email}")
+	public ResponseEntity<?> getClientByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(cliServ.findByEmail(email));
 	}
 }
