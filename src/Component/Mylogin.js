@@ -12,42 +12,52 @@ export default function Mylogin() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-
     const checkuser = async (event) => {
         event.preventDefault();
         const myuser = {
             username: username,
             password: password
         }
-        const user = {
+        var user = {
             id: "",
             username: "",
             role: "",
         };
-
-
+        var myrole="";
+        var temp = "";
         await axios.post("http://localhost:8080/login/authenticate", myuser).then(
             async (response) => {
                 console.log(response);
                 if (response.data !== '') {
-                    const myrole = response.data.role;
-
-                    await axios.post(`http://localhost:8080/mail/${response.data.username}`).then(
-                        (response) => {
-                            user = {
-                                ...user,
-                                id: (response.data.empId !== null) ? response.data.empId : response.data.client,
-                            }
-                        }
-                    )
+                    myrole = response.data.role;
+                    if (myrole === "EMPLOYEE" || myrole === "MANAGER") {
+                        temp = "employee";
+                    } else {
+                        temp = "client";
+                    }
                     alert("looged in successfully");
-                    dispatch(login(user));
-                    navigate("/home");
+                    
+                    console.log("first request end");
                 } else {
                     alert("Error from login");
                 }
             }
-        ).catch((errr) => {
+        ).then(async () => {
+            if (temp === "employee" || temp === "client") {
+                await axios.post(`http://localhost:8080/${temp}/mail/${username}`).then(
+                    (response) => {
+                        console .log("user updating");
+                        user = {                           
+                            username: username,
+                            role: myrole,
+                            id: (response.data.empId !== null) ? response.data.empId : response.data.client,
+                        }
+                        dispatch(login(user));
+                        navigate("/home");
+                    }
+                )
+            }
+        }).catch((errr) => {
             console.log(errr);
         })
 
