@@ -112,7 +112,8 @@ const Createlogin = () => {
                 {
                     (role === "MANAGER") ? <input type="text" className="form-control" id="managerid" value={managerid} hidden />
                         : <div className="row mb-3">
-                            <div className="col-sm-10"><label htmlFor="managerid" className="col-sm-2 col-form-label">Manager Id</label>
+                            <label htmlFor="managerid" className="col-sm-2 col-form-label">Manager Id</label>
+                            <div className="col-sm-10">
                                 <input type="text" className="form-control" id="managerid" value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
                             </div>
                         </div>
