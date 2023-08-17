@@ -11,4 +11,5 @@ public interface EmployeeService {
 	public Employee save(Employee theEmp);
 	public void deleteById(int theId);
 	public long getCount();
+	List<Employee> findByManagerId(int theId);
 }

@@ -1,5 +1,7 @@
 package TaskManagementSystem.repository;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import TaskManagementSystem.entity.Employee;
@@ -7,4 +9,6 @@ import TaskManagementSystem.entity.Employee;
 public interface EmployeeRepository extends MongoRepository<Employee, Integer>{
 	
 	Employee findFirstByOrderByEmpIdDesc();
+	
+	List<Employee> findByManagerId(int id);
 }

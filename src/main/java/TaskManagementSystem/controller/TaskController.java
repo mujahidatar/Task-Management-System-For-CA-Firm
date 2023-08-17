@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import TaskManagementSystem.entity.Task;
+import TaskManagementSystem.enums.Status;
 import TaskManagementSystem.service.TaskService;
 
 @RestController
@@ -41,5 +42,20 @@ public class TaskController {
 	public ResponseEntity<?> deleteTask(@PathVariable int id) {
 		taskServ.deleteById(id);
 		return ResponseEntity.ok("Task Deleted");
+	}
+	
+	@PostMapping("manager/{id}/{status}")
+	public ResponseEntity<?> getTaskByManagerIdAndStatus(@PathVariable int id,@PathVariable Status status) {
+		return ResponseEntity.ok(taskServ.findByManagerIdAndStatus(id, status));
+	}
+	
+	@PostMapping("employee/{id}/{status}")
+	public ResponseEntity<?> getTaskByEmployeeIdAndStatus(@PathVariable int id,@PathVariable Status status) {
+		return ResponseEntity.ok(taskServ.findByEmployeeIdAndStatus(id, status));
+	}
+	
+	@PostMapping("client/{id}/{status}")
+	public ResponseEntity<?> getTaskByClientIdAndStatus(@PathVariable int id,@PathVariable Status status) {
+		return ResponseEntity.ok(taskServ.findByClientIdAndStatus(id, status));
 	}
 }

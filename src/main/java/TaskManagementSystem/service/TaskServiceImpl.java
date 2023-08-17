@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import TaskManagementSystem.entity.Task;
+import TaskManagementSystem.enums.Status;
 import TaskManagementSystem.repository.TaskRepository;
 
 @Service
@@ -47,6 +48,21 @@ public class TaskServiceImpl implements TaskService{
 	@Override
 	public long getCount() {
 		return taskRepo.count();
+	}
+
+	@Override
+	public List<Task> findByManagerIdAndStatus(int id, Status status) {
+		return taskRepo.findByManagerIdAndStatus(id, status);
+	}
+	
+	@Override
+	public List<Task> findByEmployeeIdAndStatus(int id, Status status) {
+		return taskRepo.findByEmployeeIdAndStatus(id, status);
+	}
+	
+	@Override
+	public List<Task> findByClientIdAndStatus(int id, Status status) {
+		return taskRepo.findByClientIdAndStatus(id, status);
 	}
 	
 }

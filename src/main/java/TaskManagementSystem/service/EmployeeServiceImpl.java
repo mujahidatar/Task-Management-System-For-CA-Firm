@@ -66,5 +66,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public long getCount() {
 		return empRepo.count();
 	}
+
+	@Override
+	public List<Employee> findByManagerId(int theId) {
+		return empRepo.findByManagerId(theId);
+	}
 	
 }

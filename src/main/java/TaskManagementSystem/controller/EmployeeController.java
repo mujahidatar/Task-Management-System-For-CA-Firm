@@ -1,5 +1,7 @@
 package TaskManagementSystem.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class EmployeeController {
 
 	@GetMapping
 	public ResponseEntity<?> getEmps() {
-		return ResponseEntity.ok(this.empServ.findAll());
+		return ResponseEntity.ok(empServ.findAll());
 	}
 
 	@PostMapping
@@ -44,8 +46,7 @@ public class EmployeeController {
 
 	@PostMapping("/{id}")
 	public ResponseEntity<?> getEmp(@PathVariable int id) {
-		Employee emp = this.empServ.findById(id);
-		return ResponseEntity.ok(emp);
+		return ResponseEntity.ok(empServ.findById(id));
 	}
 
 	@DeleteMapping("/{id}")
@@ -53,4 +54,10 @@ public class EmployeeController {
 		this.empServ.deleteById(id);
 		return "Document Deleted";
 	}
+	
+	@PostMapping("manager/{id}")
+	public ResponseEntity<?> getEmpByManagerId(@PathVariable int id) {
+		return ResponseEntity.ok(empServ.findByManagerId(id));
+	}
+		
 }
