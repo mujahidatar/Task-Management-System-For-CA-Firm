@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import TaskManagementSystem.entity.Client;
@@ -13,12 +17,14 @@ import TaskManagementSystem.repository.ClientRepository;
 import TaskManagementSystem.repository.LoginRepository;
 
 @Service
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 	@Autowired
 	ClientRepository cliRepo;
 	@Autowired
 	LoginRepository logRepo;
-	
+	@Autowired
+	MongoTemplate mongoTemplate;
+
 	@Override
 	public List<Client> findAll() {
 		return cliRepo.findAll();
@@ -27,7 +33,7 @@ public class ClientServiceImpl implements ClientService{
 	@Override
 	public Client findById(int theId) {
 		Optional<Client> opt = cliRepo.findById(theId);
-		if(opt.isPresent()) {
+		if (opt.isPresent()) {
 			return opt.get();
 		}
 		return null;
@@ -36,24 +42,29 @@ public class ClientServiceImpl implements ClientService{
 	@Override
 	public Client save(Client theCli) {
 		Client cli = cliRepo.findFirstByOrderByClientIdDesc();
-		if(theCli.getClientId()==0) {
-			if(cli!=null)
-				theCli.setClientId(cli.getClientId()+1);
+		if (theCli.getClientId() == 0) {
+			if (cli != null)
+				theCli.setClientId(cli.getClientId() + 1);
 			else
 				theCli.setClientId(10000);
+			Login logCheck = logRepo.findByUsername(theCli.getClientEmail());
+			if (logCheck != null)
+				return null;
+			Login log = new Login(theCli.getClientEmail(), theCli.getClientPassword(), Roles.CLIENT);
+			logRepo.save(log);
+		} else {
+			Query query = new Query(Criteria.where("username").is(theCli.getClientEmail()));
+			Update update = new Update().set("password", theCli.getClientPassword());
+			mongoTemplate.updateFirst(query, update, Login.class);
 		}
-		Login logCheck = logRepo.findByUsername(theCli.getClientEmail());
-		if(logCheck!=null)
-			return null;
-		Login log = new Login(theCli.getClientEmail(),theCli.getClientPassword(),Roles.CLIENT);
-		logRepo.save(log);
+
 		return cliRepo.save(theCli);
 	}
 
 	@Override
 	public void deleteById(int theId) {
 		Optional<Client> opt = cliRepo.findById(theId);
-		if(opt.isPresent()) {
+		if (opt.isPresent()) {
 			Client cli = opt.get();
 			logRepo.deleteByKey(cli.getClientEmail());
 			cliRepo.deleteById(theId);
