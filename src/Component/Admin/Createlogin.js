@@ -68,7 +68,7 @@ const Createlogin = () => {
             
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Id</label>
+                    <label htmlFor="name" className="col-sm-2 col-form-label" hidden style={{"fontWeight":"bold"}}>Employee Id</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" value={id || null} id="name" hidden />
                     </div>
@@ -130,7 +130,7 @@ const Createlogin = () => {
                 </div>
                 <div className="row mb-3 pt-3">
                     <div className="col-sm-10" style={{"margin":"auto","width":400}}>
-                        <input type="submit" className="form-control btn btn-info" value="Create Login" style={{"fontWeight":"bold"}}/>
+                        <input type="submit" className="form-control btn btn-info" value={mybtn} style={{"fontWeight":"bold"}}/>
                     </div>
                 </div>
             </form>

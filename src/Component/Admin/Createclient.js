@@ -60,7 +60,7 @@ const Createclient = () => {
         <div className="container mt-3 py-5" style={{"width":1100,"border":"2px solid skyblue","backgroundColor":"#B3E0F5","padding":"0px 100px"}}>
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Client Id </label>
+                    <label htmlFor="name" className="col-sm-2 col-form-label" hidden style={{"fontWeight":"bold"}}>Client Id </label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" value={id || null} id="name" hidden />
                     </div>
@@ -97,7 +97,7 @@ const Createclient = () => {
                 </div>
                 <div className="row mb-3 pt-3">
                     <div className="col-sm-10" style={{"margin":"auto","width":400}}>
-                        <input type="submit" className="form-control btn btn-info" value="Create Client" style={{"fontWeight":"bold"}}/>
+                        <input type="submit" className="form-control btn btn-info" value={mybtn} style={{"fontWeight":"bold"}}/>
                     </div>
                 </div>
             </form>
