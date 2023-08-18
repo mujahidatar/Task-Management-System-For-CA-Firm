@@ -14,4 +14,7 @@ public interface TaskService {
 	public List<Task> findByManagerIdAndStatus(int id,Status status);
 	public List<Task> findByEmployeeIdAndStatus(int id,Status status);
 	public List<Task> findByClientIdAndStatus(int id,Status status);
+	public List<Task> findByManagerId(int id);
+	public List<Task> findByEmployeeId(int id);
+	public List<Task> findByClientId(int id);
 }

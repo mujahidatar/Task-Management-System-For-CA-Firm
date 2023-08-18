@@ -12,4 +12,7 @@ public interface TaskRepository extends MongoRepository<Task, Integer>{
 	List<Task> findByManagerIdAndStatus(int id, Status status);
 	List<Task> findByEmployeeIdAndStatus(int id, Status status);
 	List<Task> findByClientIdAndStatus(int id, Status status);
+	List<Task> findByManagerId(int id);
+	List<Task> findByEmployeeId(int id);
+	List<Task> findByClientId(int id);
 }

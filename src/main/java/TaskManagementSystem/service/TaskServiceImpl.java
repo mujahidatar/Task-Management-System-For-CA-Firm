@@ -64,5 +64,20 @@ public class TaskServiceImpl implements TaskService{
 	public List<Task> findByClientIdAndStatus(int id, Status status) {
 		return taskRepo.findByClientIdAndStatus(id, status);
 	}
+
+	@Override
+	public List<Task> findByManagerId(int id) {
+		return taskRepo.findByManagerId(id);
+	}
+
+	@Override
+	public List<Task> findByEmployeeId(int id) {
+		return taskRepo.findByEmployeeId(id);
+	}
+
+	@Override
+	public List<Task> findByClientId(int id) {
+		return taskRepo.findByClientId(id);
+	}
 	
 }

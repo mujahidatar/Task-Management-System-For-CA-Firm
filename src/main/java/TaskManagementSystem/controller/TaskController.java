@@ -58,4 +58,19 @@ public class TaskController {
 	public ResponseEntity<?> getTaskByClientIdAndStatus(@PathVariable int id,@PathVariable Status status) {
 		return ResponseEntity.ok(taskServ.findByClientIdAndStatus(id, status));
 	}
+	
+	@PostMapping("manager/{id}")
+	public ResponseEntity<?> getTaskByManagerId(@PathVariable int id) {
+		return ResponseEntity.ok(taskServ.findByManagerId(id));
+	}
+	
+	@PostMapping("employee/{id}")
+	public ResponseEntity<?> getTaskByEmployeeId(@PathVariable int id) {
+		return ResponseEntity.ok(taskServ.findByEmployeeId(id));
+	}
+	
+	@PostMapping("client/{id}")
+	public ResponseEntity<?> getTaskByClientId(@PathVariable int id) {
+		return ResponseEntity.ok(taskServ.findByClientId(id));
+	}
 }
