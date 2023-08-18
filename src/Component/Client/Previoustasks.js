@@ -12,8 +12,8 @@ const Previoustasks = () => {
        // console.log("in home " + user.role);
     }, [authuser]);
 
-    const [tasks, setTasks] = ([]);
-    axios.get(`http://localhost:8080/client/${user.id}`).then(
+    const [tasks, setTasks] =useState([]);
+    axios.post(`http://localhost:8080/task/${user.id}`).then(
         (response) => {
             setTasks(response.data);
         }, (error) => {
@@ -25,10 +25,8 @@ const Previoustasks = () => {
             <table className="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>                        
                     </tr>
                 </thead>
                 <tbody>

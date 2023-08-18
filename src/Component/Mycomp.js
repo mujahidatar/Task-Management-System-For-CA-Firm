@@ -6,7 +6,6 @@ import Mylogout from './Mylogout'
 import Createtask from './Client/Createtask'
 import Previoustasks from './Client/Previoustasks'
 import Createlogin from './Admin/Createlogin'
-import Mytasks from './Employee/Mytasks'
 import Managerdashboard from './Manager/Managerdashboard';
 import Admindashboard from './Admin/Admindashboard';
 import Employeedashboard from './Employee/Employeedashboard';
@@ -16,6 +15,7 @@ import Getallemployees from './Admin/Getallemployees'
 import { Logincreation } from './Admin/Logincreation'
 import Getallclients from './Admin/Getallclients'
 import Createclient from './Admin/Createclient'
+import SeeTasks from './Employee/SeeTasks'
 
 
 
@@ -53,14 +53,15 @@ export const Mycomp = () => {
                <Route path="createlogin/:cliobj" element={<Createclient />}></Route>
                <Route path="createtask" element={<Createtask />}></Route> 
                <Route path="previoustasks" element={<Previoustasks />}></Route>
-               <Route path="mytasks" element={<Mytasks />}></Route>
+               <Route path="seetasks" element={<SeeTasks />}></Route>
+               
                <Route path="getallemployees" element={<Getallemployees  />}></Route>
                <Route path="about" element={<Home />}></Route>
                
               
                <Route path="createlogin" element={<Createlogin />}></Route>
                <Route path="createlogin/:emp" element={<Createlogin />}></Route>                
-               <Route path="mytasks" element={<Mytasks />}></Route>
+             
                </Routes>          
             </BrowserRouter>
         </div>

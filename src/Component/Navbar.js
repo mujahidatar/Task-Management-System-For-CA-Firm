@@ -8,7 +8,6 @@ export default function Navbar(props) {
         setUser(authuser);
     }, [authuser]);
 
-
     return (
 
         <div>

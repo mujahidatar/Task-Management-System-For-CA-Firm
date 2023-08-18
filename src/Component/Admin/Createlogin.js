@@ -23,9 +23,13 @@ const Createlogin = () => {
         empPassword: password
     }
     const importemp = location.state?.emp || formdata;
-        
+    var mybtn = "Create"
+    if (location.state) {
+        var temp = true;
+        mybtn = "Update";
+    }
     useEffect(() => {
-        console.log("in the create login useeffect"+importemp.name+importemp.password);
+        console.log("in the create login useeffect" + importemp.name + importemp.password);
         setId(importemp.empId);
         setName(importemp.empName);
         setEmailid(importemp.empEmail);
@@ -51,8 +55,8 @@ const Createlogin = () => {
         await axios.post("http://localhost:8080/employee", formdata).then(
             (response) => {
                 if (response.request.status === 200) {
-                    alert("Login created successfully");
-                } 
+                    alert(`Login ${mybtn}ed successfully`);
+                }
             }).catch((error) => {
                 alert(error.response.data);
                 console.log(error);
@@ -66,7 +70,7 @@ const Createlogin = () => {
                 <div className="row mb-3">
                     <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Id</label>
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" value={id || null} id="name" disabled />
+                        <input type="text" className="form-control" value={id || null} id="name" hidden />
                     </div>
                 </div>
                 <div className="row mb-3">
@@ -78,7 +82,7 @@ const Createlogin = () => {
                 <div className="row mb-3">
                     <label htmlFor="email" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Email Id</label>
                     <div className="col-sm-10">
-                        <input type="email" className="form-control" id="email" value={emailid} onChange={(e) => { setEmailid(e.target.value) }} required />
+                        <input type="email" className="form-control" id="email" value={emailid} disabled={temp} onChange={(e) => { setEmailid(e.target.value) }} required />
                     </div>
                 </div>
                 <div className="row mb-3">
@@ -90,21 +94,20 @@ const Createlogin = () => {
                 <div className="row mb-3">
                     <label htmlFor="address" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Address</label>
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" id="address"value={address} onChange={(e) => { setAddress(e.target.value) }} />
+                        <input type="text" className="form-control" id="address" value={address} onChange={(e) => { setAddress(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
                     <label htmlFor="role" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Select Role</label>
                     <div className="col-sm-10">
-                        <select id="role" className="form-control"  value={role} onChange={(e) => {
+                        <select id="role" className="form-control" value={role} onChange={(e) => {
                             setRole(e.target.value);
-                           
+
                             (role === "MANAGER") ? setManagerid(0) : setManagerid(null)
                         }} required >
                             <option value="">Select a role</option>
                             <option value="MANAGER">MANAGER</option>
                             <option value="EMPLOYEE">EMPLOYEE</option>
-                            <option value="ADMIN">ADMIN</option>
                         </select>
                     </div>
                 </div>

@@ -1,33 +1,40 @@
-import React, { useEffect } from 'react'
-import {useSelector} from "react-redux";
+import React from 'react'
+import { Link, } from 'react-router-dom';
+
 const Managerdashboard = () => {
-    const user = useSelector((state) => state.auth.user);
-
-    useEffect(() => {
-        if (user) {
-
-        } else {
-            alert("Please Login first");
-        }
-    }, [user]);
-
     return (
         <div>
-            <ul class="nav nav-underline">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">New</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Assigned</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Review</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Completed</a>
-                </li>
-            </ul>
+            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+                <div className="container-fluid">
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav">
+                            <li>
+                                <Link className="nav-link" to="/dashbord">Dasbhboard</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/seetasks" state="NEW"  >New Tasks </Link>
+
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/seetasks" state="INPROCESS"  >My Current Task </Link>
+
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/seetasks" state="AUI" >Awaiting </Link>
+
+                            </li>
+                            <li>
+                                <Link className="nav-link" to="/seetasks" state="REVIEW" >Review Tasks </Link>
+
+                            </li>
+                            <li>
+                                <Link className="nav-link " to="/logout">Logout</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
     )
 }
-export default Managerdashboard;
+export default Managerdashboard
