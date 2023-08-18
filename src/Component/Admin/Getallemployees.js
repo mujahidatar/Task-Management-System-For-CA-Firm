@@ -33,7 +33,8 @@ export const Getallemployees = () => {
 
     return (
         <div className="container mt-3">
-            <table className="table">
+            <h2 className='text-center'>Employees</h2>
+            <table className="table table-striped table-bordered table-hover" style={{"border":"2px solid skyblue","backgroundColor":"#C9E5FF"}}>
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -43,8 +44,8 @@ export const Getallemployees = () => {
                         <th scope="col">Address</th>
                         <th scope="col">Role</th>
                         <th scope="col">Managerid</th>
-                        <th scope="col">Update</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col" className='text-center'>Update</th>
+                        <th scope="col"className='text-center'>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,8 +60,8 @@ export const Getallemployees = () => {
                                 <td>{emp.empAddress}</td>
                                 <td>{emp.empRole}</td>
                                 <td>{emp.managerId}</td>
-                                <td><a className="btn btn-primary" onClick={() => handleClick(emp)}>Update</a></td>
-                                <td><a href="" className="btn btn-primary" onClick={() => handledeleteClick(emp)}>Delete</a></td>
+                                <td className='text-center'><a className="btn btn-info" onClick={() => handleClick(emp)}>Update</a></td>
+                                <td className='text-center'><a href="" className="btn btn-info" onClick={() => handledeleteClick(emp)}>Delete</a></td>
                             </tr>
                         ))
                     }

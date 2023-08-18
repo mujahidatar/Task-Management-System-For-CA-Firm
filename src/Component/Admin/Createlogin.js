@@ -60,41 +60,41 @@ const Createlogin = () => {
     }
 
     return (
-        <div className="container mt-3">
+        <div className="container mt-3 py-5" style={{"width":1100,"border":"2px solid skyblue","backgroundColor":"#B3E0F5","padding":"0px 100px"}}>
             
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" >Emp Id :</label>
+                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Id</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" value={id || null} id="name" disabled />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label">Enter Name :</label>
+                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Name</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" id="name" value={name} required onChange={(e) => { setName(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="email" className="col-sm-2 col-form-label">Email Id :</label>
+                    <label htmlFor="email" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Email Id</label>
                     <div className="col-sm-10">
                         <input type="email" className="form-control" id="email" value={emailid} onChange={(e) => { setEmailid(e.target.value) }} required />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="number" className="col-sm-2 col-form-label">Contact Number :</label>
+                    <label htmlFor="number" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Contact Number</label>
                     <div className="col-sm-10">
                         <input type="number" className="form-control" id="number" value={number} onChange={(e) => { setNumber(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="address" className="col-sm-2 col-form-label">Address</label>
+                    <label htmlFor="address" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Address</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" id="address"value={address} onChange={(e) => { setAddress(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="role" className="col-sm-2 col-form-label">Select Role:</label>
+                    <label htmlFor="role" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Select Role</label>
                     <div className="col-sm-10">
                         <select id="role" className="form-control"  value={role} onChange={(e) => {
                             setRole(e.target.value);
@@ -112,7 +112,7 @@ const Createlogin = () => {
                 {
                     (role === "MANAGER") ? <input type="text" className="form-control" id="managerid" value={managerid} hidden />
                         : <div className="row mb-3">
-                            <label htmlFor="managerid" className="col-sm-2 col-form-label">Manager Id</label>
+                            <label htmlFor="managerid" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Manager Id</label>
                             <div className="col-sm-10">
                                 <input type="text" className="form-control" id="managerid" value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
                             </div>
@@ -120,15 +120,14 @@ const Createlogin = () => {
                 }
 
                 <div className="row mb-3">
-                    <label htmlFor="password" className="col-sm-2 col-form-label">Password</label>
+                    <label htmlFor="password" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Password</label>
                     <div className="col-sm-10">
                         <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value) }} required />
                     </div>
                 </div>
-                <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label"></label>
-                    <div className="col-sm-10">
-                        <input type="submit" className="form-control" value="Create Login" />
+                <div className="row mb-3 pt-3">
+                    <div className="col-sm-10" style={{"margin":"auto","width":400}}>
+                        <input type="submit" className="form-control btn btn-info" value="Create Login" style={{"fontWeight":"bold"}}/>
                     </div>
                 </div>
             </form>

@@ -35,7 +35,8 @@ export const Getallclients = () => {
     }
     return (
         <div className="container mt-3">
-            <table className="table">
+            <h2 className='text-center'>Clients</h2>
+            <table className="table table-striped table-bordered table-hover" style={{"border":"2px solid skyblue","backgroundColor":"#C9E5FF"}}>
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -43,8 +44,8 @@ export const Getallclients = () => {
                         <th scope="col">Contact</th>
                         <th scope="col">Email</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Update</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col" className='text-center'>Update</th>
+                        <th scope="col" className='text-center'>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,8 +57,8 @@ export const Getallclients = () => {
                                 <td>{cliobj.clientContact}</td>
                                 <td>{cliobj.clientEmail}</td>
                                 <td>{cliobj.clientAddress}</td>                                
-                                <td><a className="btn btn-primary" onClick={() => handleClick(cliobj)}>Update</a></td>
-                                <td><a href="" className="btn btn-primary" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>                                
+                                <td className='text-center'><a className="btn btn-info" onClick={() => handleClick(cliobj)}>Update</a></td>
+                                <td className='text-center'><a href="" className="btn btn-info" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>                                
                             </tr>
                         ))
                     }

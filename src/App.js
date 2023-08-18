@@ -8,7 +8,7 @@ import store from './Container/Store';
 function App() {
   return (
     <Provider store={store} >
-      <div>
+      <div style={{"backgroundColor":"#EDEDDA","height":"100vh"}}>
         <Mycomp />
       </div>
     </Provider>
