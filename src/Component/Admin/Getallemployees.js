@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const Getallemployees = () => {
     const [employees, setEmployees] = useState([]);
@@ -8,6 +8,7 @@ export const Getallemployees = () => {
     useEffect(() => {
         axios.get("http://localhost:8080/employee").then((response) => {
             setEmployees(response.data);
+            console.log(response)
         }, (error) => {
             console.log(error)
         });

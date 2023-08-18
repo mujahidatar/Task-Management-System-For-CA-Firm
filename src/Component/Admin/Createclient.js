@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const Createclient = () => {
     const location = useLocation(); // Get the location object
-    const [id, setId] = useState("0");
+    const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [emailid, setEmailid] = useState("");
     const [number, setNumber] = useState("");
@@ -19,6 +19,11 @@ const Createclient = () => {
         clientPassword: password
     }
     const importclient = location.state?.cliobj || formdata;
+    var mybtn="Create"
+    if (location.state) {
+        var temp = true;
+        mybtn = "Update";
+    }
     useEffect(() => {
         console.log("in the create client useeffect" + importclient.clientName + importclient.clientPassword);
         setId(importclient.clientId);
@@ -43,7 +48,7 @@ const Createclient = () => {
         await axios.post("http://localhost:8080/client", formdata).then(
             (response) => {
                 if (response.request.status === 200) {
-                    alert("Client created successfully");
+                    alert(`Client ${mybtn}ed successfully`);
                 } 
             }).catch((error) => {
                 alert(error.response.data);
@@ -55,9 +60,9 @@ const Createclient = () => {
         <div className="container mt-3">
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" >Client Id :</label>
+                    <label htmlFor="name" className="col-sm-2 col-form-label" hidden >Client Id :</label>
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" value={id || null} id="name" disabled />
+                        <input type="text" className="form-control" value={id || null} id="name" hidden />
                     </div>
                 </div>
                 <div className="row mb-3">
@@ -93,7 +98,7 @@ const Createclient = () => {
                 <div className="row mb-3">
                     <label className="col-sm-2 col-form-label"></label>
                     <div className="col-sm-10">
-                        <input type="submit" className="form-control" value="Create Client" />
+                        <input type="submit" className="form-control" value={mybtn} />
                     </div>
                 </div>
             </form>

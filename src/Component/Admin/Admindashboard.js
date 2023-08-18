@@ -14,10 +14,10 @@ const Admindashboard = () => {
                                 <Link className="nav-link " to="/logincreation">Create Login</Link>
                             </li>
                             <li>
-                                <Link className="nav-link " to="/getallemployees">See Employees</Link>
+                                <Link className="nav-link " to="/getallemployees">Employees</Link>
                             </li>
                             <li>
-                                <Link className="nav-link " to="/getallclients">See Clients</Link>
+                                <Link className="nav-link " to="/getallclients">Clients</Link>
                             </li>
                             <li>
                                 <Link className="nav-link " to="/logout">Logout</Link>

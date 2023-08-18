@@ -10,8 +10,8 @@ export const Logincreation = () => {
 
     return (
         <div className='center'>
-            <Link to="" type="button" class="btn btn-light" onClick={() => setTab(0)}>Create Employee</Link>
-            <Link to="" type="submit" class="btn btn-light" onClick={() => setTab(1)}>Create Client</Link>
+            <Link to="" type="button" class="btn btn-light" onClick={() => setTab(0)}>Employee</Link>
+            <Link to="" type="submit" class="btn btn-light" onClick={() => setTab(1)}>Client</Link>
             {
                 tab === 0 ? <Createlogin /> : <Createclient />
             }

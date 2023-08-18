@@ -30,13 +30,11 @@ export default function Mylogin() {
                 console.log(response);
                 if (response.data !== '') {
                     myrole = response.data.role;
-                    if (myrole === "EMPLOYEE" || myrole === "MANAGER") {
+                    if (myrole === "EMPLOYEE" || myrole === "MANAGER" || myrole === "ADMIN" ) {
                         temp = "employee";
                     } else {
                         temp = "client";
-                    }
-                    alert("looged in successfully");
-                    
+                    }   
                     console.log("first request end");
                 } else {
                     alert("Error from login");
@@ -54,6 +52,7 @@ export default function Mylogin() {
                         }
                         dispatch(login(user));
                         navigate("/home");
+                        alert("looged in successfully");
                     }
                 )
             }
