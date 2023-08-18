@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../Services/Actions/Authenticationaction';
 import { useNavigate } from 'react-router-dom';
 import logo from '../Component/multimedia/CA-Logo.png';
+import { ToastContainer,toast } from 'react-toastify';
 
 export default function Mylogin() {
     const [username, setUsername] = useState("");
@@ -38,7 +39,8 @@ export default function Mylogin() {
                     }   
                     console.log("first request end");
                 } else {
-                    alert("Error from login");
+                    //alert("Error from login");
+                    toast.error("Incorrect Username or Password!");
                 }
             }
         ).then(async () => {
@@ -53,7 +55,7 @@ export default function Mylogin() {
                         }
                         dispatch(login(user));
                         navigate("/home");
-                        alert("looged in successfully");
+                        // alert("looged in successfully");
                     }
                 )
             }
@@ -88,6 +90,7 @@ export default function Mylogin() {
                 </div>
             </form>
             </div>
+            <ToastContainer />
         </div>
     )
 }

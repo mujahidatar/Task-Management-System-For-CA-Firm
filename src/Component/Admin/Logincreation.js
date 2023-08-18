@@ -23,9 +23,9 @@ export const Logincreation = () => {
         setTab(1);
     }
     return (
-        <div className='center container '>
-            <Link to="" type="button" className={`btn bg-transparent fs-3 mx-5 ${emp ? 'fw-bold' : 'fw-normal'}`} onClick={empHandle}>Employee</Link>
-            <Link to="" type="button" className={`btn bg-transparent fs-3 mx-1 ${cli ? 'fw-bold' : 'fw-normal'}`} onClick={cliHandle}>Client</Link>
+        <div className='center container'>
+            <Link to="" type="button" className={`btn bg-transparent fs-6 mx-3 ${emp ? 'fw-bold' : 'fw-normal'}`} onClick={empHandle}>Employee</Link>
+            <Link to="" type="button" className={`btn bg-transparent fs-6  ${cli ? 'fw-bold' : 'fw-normal'}`} onClick={cliHandle}>Client</Link>
             <hr/>
             {
                 tab === 0 ? <Createlogin /> : <Createclient />

@@ -64,42 +64,42 @@ const Createlogin = () => {
     }
 
     return (
-        <div className="container mt-3 py-5" style={{"width":1100,"border":"2px solid skyblue","backgroundColor":"#B3E0F5","padding":"0px 100px"}}>
+        <div className="container mt-3 py-2" style={{"width":900,"border":"2px solid skyblue","backgroundColor":"#B3E0F5","padding":"0px 100px"}}>
             
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Id</label>
+                    <label htmlFor="name" className="col-sm-3 col-form-label fd-6" style={{"fontWeight":"bold"}} hidden>Employee Id</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" value={id || null} id="name" hidden />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Employee Name</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="name" className="col-sm-3 col-form-label " style={{"fontWeight":"bold","fontSize":14}}>Employee Name</label>
+                    <div className="col-sm-9">
                         <input type="text" className="form-control" id="name" value={name} required onChange={(e) => { setName(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="email" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Email Id</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="email" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Email Id</label>
+                    <div className="col-sm-9">
                         <input type="email" className="form-control" id="email" value={emailid} disabled={temp} onChange={(e) => { setEmailid(e.target.value) }} required />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="number" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Contact Number</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="number" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Contact Number</label>
+                    <div className="col-sm-9">
                         <input type="number" className="form-control" id="number" value={number} onChange={(e) => { setNumber(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="address" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Address</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="address" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Address</label>
+                    <div className="col-sm-9">
                         <input type="text" className="form-control" id="address" value={address} onChange={(e) => { setAddress(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="role" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Select Role</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="role" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Select Role</label>
+                    <div className="col-sm-9">
                         <select id="role" className="form-control" value={role} onChange={(e) => {
                             setRole(e.target.value);
 
@@ -111,26 +111,21 @@ const Createlogin = () => {
                         </select>
                     </div>
                 </div>
-
-                {
-                    (role === "MANAGER") ? <input type="text" className="form-control" id="managerid" value={managerid} hidden />
-                        : <div className="row mb-3">
-                            <label htmlFor="managerid" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Manager Id</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="managerid" value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
-                            </div>
-                        </div>
-                }
-
                 <div className="row mb-3">
-                    <label htmlFor="password" className="col-sm-2 col-form-label" style={{"fontWeight":"bold"}}>Password</label>
-                    <div className="col-sm-10">
+                    <label htmlFor="managerid" className="col-sm-3 col-form-label" hidden={(role === "MANAGER")} style={{"fontWeight":"bold","fontSize":14}}>Manager Id</label>
+                    <div className="col-sm-9">
+                        <input type="text" className="form-control" id="managerid" hidden={(role === "MANAGER")} value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <label htmlFor="password" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Password</label>
+                    <div className="col-sm-9">
                         <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value) }} required />
                     </div>
                 </div>
-                <div className="row mb-3 pt-3">
-                    <div className="col-sm-10" style={{"margin":"auto","width":400}}>
-                        <input type="submit" className="form-control btn btn-info" value="Create Login" style={{"fontWeight":"bold"}}/>
+                <div className="row mb-3 pt-1">
+                    <div className="col-sm-10" style={{"margin":"auto","width":360}}>
+                        <input type="submit" className="form-control btn btn-info" value={mybtn} style={{"fontWeight":"bold"}}/>
                     </div>
                 </div>
             </form>
