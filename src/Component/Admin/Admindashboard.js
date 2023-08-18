@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
+import Admdash from './Admdash';
 const Admindashboard = () => {
     var flag = 0;
     useEffect(()=>{
@@ -20,7 +21,7 @@ const Admindashboard = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">
                             <li>
-                                <Link className="nav-link text-white fs-3" to="/admdashbord">Dasbhboard</Link>
+                                <Link className="nav-link text-white fs-5" to="/admdash">Dasbhboard</Link>
                             </li>
                             <li>
                                 <Link className="nav-link text-white" to="/logincreation">Create Login</Link>
@@ -38,7 +39,6 @@ const Admindashboard = () => {
                     </div>
                 </div>
             </nav>
-            
         </div>
     )
 }

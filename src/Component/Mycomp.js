@@ -54,7 +54,7 @@ export const Mycomp = () => {
                <Route path="createlogin/:cliobj" element={<Createclient />}></Route>
                <Route path="createtask" element={<Createtask />}></Route> 
                <Route path="previoustasks" element={<Previoustasks />}></Route>
-               <Route path="admdashbord" element={<Admdash />}></Route>
+               <Route path="admdash" element={<Admdash />}></Route>
                <Route path="seetasks" element={<SeeTasks />}></Route>
                
                <Route path="getallemployees" element={<Getallemployees  />}></Route>
