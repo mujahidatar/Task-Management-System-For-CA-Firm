@@ -51,6 +51,7 @@ export const Getallemployees = () => {
                 <tbody>
                     {
                         employees.map((emp) => (
+                            emp.empRole !== "ADMIN" &&
                             <tr>
                                 <th scope="row">{emp.empId}</th>
                                 <td>{emp.empName}</td>
