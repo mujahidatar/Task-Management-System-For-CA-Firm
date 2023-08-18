@@ -20,7 +20,7 @@ const Admindashboard = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">
                             <li>
-                                <Link className="nav-link text-white fs-5" to="/dashbord">Dasbhboard</Link>
+                                <Link className="nav-link text-white fs-3" to="/admdashbord">Dasbhboard</Link>
                             </li>
                             <li>
                                 <Link className="nav-link text-white" to="/logincreation">Create Login</Link>

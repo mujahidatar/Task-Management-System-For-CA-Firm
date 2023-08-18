@@ -54,6 +54,10 @@ export default function Mylogin() {
                             id: (response.data.empId !== null) ? response.data.empId : response.data.client,
                         }
                         dispatch(login(user));
+                        if(user.role ==="ADMIN")
+                        {
+                            navigate("/admdashbord");
+                        }
                         navigate("/home");
                         // alert("looged in successfully");
                     }
