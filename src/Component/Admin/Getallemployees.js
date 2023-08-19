@@ -51,9 +51,9 @@ export const Getallemployees = () => {
                 </thead>
                 <tbody>
                     {
-                        employees.map((emp) => (
+                        employees.map((emp,index) => (
                             emp.empRole !== "ADMIN" &&
-                            <tr>
+                            <tr key={index}>
                                 <th scope="row">{emp.empId}</th>
                                 <td>{emp.empName}</td>
                                 <td>{emp.empContact}</td>

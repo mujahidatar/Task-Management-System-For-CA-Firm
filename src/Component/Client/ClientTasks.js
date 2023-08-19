@@ -1,20 +1,20 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Taskdetails from '../Taskdetails';
 
-const Home = () => {
+const ClientTasks = () => {
     const authuser = useSelector((state) => state.auth.user);
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
         console.log("useefeect called");
         setTasks([]);
         myrender();
+
     }, [authuser]);
 
     const myrender = () => {
-        var temprole=authuser.role;
-        temprole=temprole.toLowerCase();
-        axios.post(`http://localhost:8080/task/${temprole}/${authuser.id}`).then(
+        axios.post(`http://localhost:8080/task/client/${authuser.id}`).then(
             (response) => {
                 setTasks(response.data);
                 console.log(response);
@@ -23,8 +23,26 @@ const Home = () => {
             }
         )
     }
-    
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
 
+    const openModal = (task) => {
+        setSelectedTask(task);
+        setModalOpen(true);
+        
+            <Taskdetails
+                isOpen={openModal}
+                toggle={closeModal}
+                task={selectedTask}
+
+            />
+       
+    }
+
+    const closeModal = () => {
+        setSelectedTask(null);
+        setModalOpen(false);
+    }
     return (
         <div className='container mt-3'>
             <table className="table">
@@ -57,4 +75,4 @@ const Home = () => {
         </div>
     )
 }
-export default Home;
+export default ClientTasks;

@@ -9,22 +9,22 @@ const Managerdashboard = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
                             <li>
-                                <Link className="nav-link" to="/dashbord">Dasbhboard</Link>
+                                <Link className="nav-link" to="/home">Dasbhboard</Link>
                             </li>
                             <li>
-                                <Link className="nav-link" to="/seetasks" state="NEW"  >New Tasks </Link>
+                                <Link className="nav-link" to="/seetasks" state="NEW"  >New</Link>
 
                             </li>
                             <li>
-                                <Link className="nav-link" to="/seetasks" state="INPROCESS"  >My Current Task </Link>
+                                <Link className="nav-link" to="/seetasks" state="INPROCESS" >Inprocess</Link>
 
                             </li>
                             <li>
-                                <Link className="nav-link" to="/seetasks" state="AUI" >Awaiting </Link>
+                                <Link className="nav-link" to="/seetasks" state="AUI" >AUI </Link>
 
                             </li>
                             <li>
-                                <Link className="nav-link" to="/seetasks" state="REVIEW" >Review Tasks </Link>
+                                <Link className="nav-link" to="/seetasks" state="REVIEW" >Review</Link>
 
                             </li>
                             <li>

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Createlogin from './Createlogin'
 import Createclient  from './Createclient';
 
 
-export const Logincreation = () => {
-    const navigate = useNavigate();
+export const Logincreation = () => {    
     const [tab, setTab] = useState(0);
     const [emp,setEmp] = useState(true);
     const [cli,setCli] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const Getallclients = () => {
     const [client, setClient] = useState([]);
@@ -50,8 +50,8 @@ export const Getallclients = () => {
                 </thead>
                 <tbody>
                     {
-                        client.map((cliobj) => (
-                            <tr>
+                        client.map((cliobj,index) => (
+                            <tr key={index}>
                                 <th scope="row">{cliobj.clientId}</th>
                                 <td>{cliobj.clientName}</td>
                                 <td>{cliobj.clientContact}</td>

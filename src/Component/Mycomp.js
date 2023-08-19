@@ -4,7 +4,6 @@ import Home from './Home'
 import Mylogin from './Mylogin'
 import Mylogout from './Mylogout'
 import Createtask from './Client/Createtask'
-import Previoustasks from './Client/Previoustasks'
 import Createlogin from './Admin/Createlogin'
 import Managerdashboard from './Manager/Managerdashboard';
 import Admindashboard from './Admin/Admindashboard';
@@ -17,6 +16,8 @@ import Getallclients from './Admin/Getallclients'
 import Createclient from './Admin/Createclient'
 import SeeTasks from './Employee/SeeTasks'
 import Admdash from './Admin/Admdash'
+import ClientTasks from './Client/ClientTasks';
+import Taskdetails from './Taskdetails'
 
 
 
@@ -25,8 +26,7 @@ export const Mycomp = () => {
     const authuser = useSelector((state) => state.auth.user);
     useEffect(() => {
         console.log("useefeect called");
-        setUser(authuser);
-       // console.log("in home " + user.role);
+        setUser(authuser);       
     }, [authuser]);
     return (
         <div>
@@ -53,7 +53,8 @@ export const Mycomp = () => {
                <Route path="createclient" element={<Createclient />}></Route>
                <Route path="createlogin/:cliobj" element={<Createclient />}></Route>
                <Route path="createtask" element={<Createtask />}></Route> 
-               <Route path="previoustasks" element={<Previoustasks />}></Route>
+               <Route path="clienttasks" element={<ClientTasks />}></Route>
+               <Route path="taskdetails" element={<Taskdetails />}></Route>
                <Route path="admdash" element={<Admdash />}></Route>
                <Route path="seetasks" element={<SeeTasks />}></Route>
                

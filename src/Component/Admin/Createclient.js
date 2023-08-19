@@ -20,8 +20,7 @@ const Createclient = () => {
     }
     const importclient = location.state?.cliobj || formdata;
     var mybtn="Create"
-    if (location.state) {
-        var temp = true;
+    if (location.state) {        
         mybtn = "Update";
     }
     useEffect(() => {

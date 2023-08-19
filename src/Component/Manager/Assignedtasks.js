@@ -28,8 +28,8 @@ export const Assignedtasks = (props) => {
                 </thead>
                 <tbody>
                     {
-                        assignedtasks.map((task)=(
-                            <tr>
+                        assignedtasks.map((task,index)=>(
+                            <tr key={index}>
                             <th scope="row">1</th>
                             <td>{task.id}</td>
                             <td>{task.title}</td>

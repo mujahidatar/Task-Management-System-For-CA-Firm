@@ -9,7 +9,7 @@ const Employeedashboard = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
                             <li>
-                                <Link className="nav-link" to="/dashbord">Dasbhboard</Link>
+                                <Link className="nav-link" to="/home">Dasbhboard</Link>
                             </li>
                             <li>                               
                                 <Link className="nav-link"  to="/seetasks" state="INPROCESS"  >Inprocess </Link>
