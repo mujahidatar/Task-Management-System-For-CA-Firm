@@ -1,0 +1,46 @@
+/* * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 20px;
+  }
+  
+ body {
+    font-family: Arial, sans-serif;
+  }
+   */
+   body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .mycolumn {   
+    float: left;
+    width: 50%;
+    padding: 30px;
+    height: 75vh; 
+  }
+  
+ 
+  .myrow:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  
+  .mycolumn h2 {
+    
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .mycolumn p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .mycolumn {
+      width: 100%;
+    }
+  } 
+ 

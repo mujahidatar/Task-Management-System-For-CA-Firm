@@ -68,9 +68,9 @@ const Createlogin = () => {
             
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-3 col-form-label fd-6" style={{"fontWeight":"bold"}} hidden>Employee Id</label>
+                    <label className="col-sm-3 col-form-label fd-6" style={{"fontWeight":"bold"}} hidden>Employee Id</label>
                     <div className="col-sm-10">
-                        <input type="text" className="form-control" value={id || null} id="name" hidden />
+                        <input type="text" className="form-control" value={id || null} hidden />
                     </div>
                 </div>
                 <div className="row mb-3">

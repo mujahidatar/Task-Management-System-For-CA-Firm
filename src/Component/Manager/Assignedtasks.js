@@ -17,7 +17,7 @@ export const Assignedtasks = (props) => {
     })
     return (
         <div>
-            <table className="table">
+            <table className="table table-striped table-bordered table-hover" style={{"border":"2px solid skyblue","backgroundColor":"#C9E5FF"}}>
                 <thead>
                     <tr>
                         <th scope="col">#</th>

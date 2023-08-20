@@ -1,21 +1,48 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ToastContainer,toast } from 'react-toastify';
-const Admindashboard = () => {
-    var flag = 0;
-    useEffect(()=>{
-        toastSuccess();
-    },[]);
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { login } from '../../Services/Actions/Authenticationaction';
 
-    const toastSuccess = () =>{
-        if(flag===0){
-        toast.success("Login Successfull !");
-        flag = 1;}
+const Admindashboard = () => {
+    var user = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
+    const navigate=useNavigate();
+    var flag = user?.flag;
+    var temp = 0;
+    useEffect(() => {
+        if (user === null && temp === 0) {
+            console.log("In the if condition ");
+            toast.error("Login Please");
+            navigate("/");
+            temp++;
+        } else if (user === null) {
+
+        } else {
+            toastSuccess();
+        }
+
+    }, []);
+
+    const toastSuccess = () => {
+        if (flag === 0) {
+            user = {
+                ...user,
+                flag: 1
+            }
+            flag = 1;
+            dispatch(login(user));
+            toast.success("Login Successfull !");
+        }
     }
     return (
         <div>
             <ToastContainer />
-            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-info text-white">
+            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-info text-white" style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 100
+            }}>
                 <div className="container-fluid">
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">
@@ -38,7 +65,7 @@ const Admindashboard = () => {
                     </div>
                 </div>
             </nav>
-        </div>
+        </div >
     )
 }
 export default Admindashboard;
