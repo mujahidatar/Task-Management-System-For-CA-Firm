@@ -3,6 +3,7 @@ package TaskManagementSystem.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import TaskManagementSystem.entity.Login;
@@ -12,6 +13,9 @@ import TaskManagementSystem.repository.LoginRepository;
 public class LoginServiceImpl implements LoginService{
 	@Autowired
 	LoginRepository logRepo;
+	
+	@Autowired
+	PasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public List<Login> findAll() {
@@ -20,6 +24,8 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
 	public Login save(Login theLog) {
+		String encodedPassword = bCryptPasswordEncoder.encode(theLog.getPassword());
+		theLog.setPassword(encodedPassword);
 		return logRepo.save(theLog);
 	}
 
@@ -35,6 +41,11 @@ public class LoginServiceImpl implements LoginService{
 	
 	public void deleteByKey(String username) {
 		logRepo.deleteByKey(username);
+	}
+
+	@Override
+	public Login findByUsername(String username) {
+		return logRepo.findByUsername(username);
 	}
 	
 }

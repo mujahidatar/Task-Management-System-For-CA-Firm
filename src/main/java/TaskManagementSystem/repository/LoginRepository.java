@@ -14,6 +14,5 @@ public interface LoginRepository extends MongoRepository<Login, Integer>{
 	
 	@Query(value="{username: ?0}",delete=true)
 	void deleteByKey(String username);
-
 }
 

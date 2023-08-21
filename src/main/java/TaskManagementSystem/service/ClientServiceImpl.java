@@ -21,7 +21,7 @@ public class ClientServiceImpl implements ClientService {
 	@Autowired
 	ClientRepository cliRepo;
 	@Autowired
-	LoginRepository logRepo;
+	LoginService logServ;
 	@Autowired
 	MongoTemplate mongoTemplate;
 
@@ -47,11 +47,11 @@ public class ClientServiceImpl implements ClientService {
 				theCli.setClientId(cli.getClientId() + 1);
 			else
 				theCli.setClientId(10000);
-			Login logCheck = logRepo.findByUsername(theCli.getClientEmail());
+			Login logCheck = logServ.findByUsername(theCli.getClientEmail());
 			if (logCheck != null)
 				return null;
 			Login log = new Login(theCli.getClientEmail(), theCli.getClientPassword(), Roles.CLIENT);
-			logRepo.save(log);
+			logServ.save(log);
 		} else {
 			Query query = new Query(Criteria.where("username").is(theCli.getClientEmail()));
 			Update update = new Update().set("password", theCli.getClientPassword());
@@ -66,7 +66,7 @@ public class ClientServiceImpl implements ClientService {
 		Optional<Client> opt = cliRepo.findById(theId);
 		if (opt.isPresent()) {
 			Client cli = opt.get();
-			logRepo.deleteByKey(cli.getClientEmail());
+			logServ.deleteByKey(cli.getClientEmail());
 			cliRepo.deleteById(theId);
 		}
 	}

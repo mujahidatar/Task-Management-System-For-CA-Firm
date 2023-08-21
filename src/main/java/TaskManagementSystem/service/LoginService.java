@@ -11,4 +11,5 @@ public interface LoginService {
 	public Login findByKey(String username,String password);
 	public long getCount();
 	public void deleteByKey(String username);
+	public Login findByUsername(String username);
 }

@@ -21,7 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	EmployeeRepository empRepo;
 	@Autowired
-	LoginRepository logRepo;
+	LoginService logServ;
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
@@ -51,11 +51,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 				theEmp.setEmpId(emp.getEmpId() + 1);
 			else
 				theEmp.setEmpId(100);
-			Login logCheck = logRepo.findByUsername(theEmp.getEmpEmail());
+			Login logCheck = logServ.findByUsername(theEmp.getEmpEmail());
 			if (logCheck != null)
 				return null;
 			Login log = new Login(theEmp.getEmpEmail(), theEmp.getEmpPassword(), theEmp.getEmpRole());
-			logRepo.save(log);
+			logServ.save(log);
 		} else {
 			Query query = new Query(Criteria.where("username").is(theEmp.getEmpEmail()));
 			Update update = new Update().set("password", theEmp.getEmpPassword());
@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> opt = empRepo.findById(theId);
 		if (opt.isPresent()) {
 			Employee emp = opt.get();
-			logRepo.deleteByKey(emp.getEmpEmail());
+			logServ.deleteByKey(emp.getEmpEmail());
 			empRepo.deleteById(theId);
 		}
 	}
