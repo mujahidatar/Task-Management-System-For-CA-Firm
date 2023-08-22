@@ -1,6 +1,6 @@
 // authReducer.js
 const initialState = {
-  user: JSON.parse(localStorage.getItem('loggedInUser')) || null,
+  user: JSON.parse(sessionStorage.getItem('loggedInUser')) || null,
 };
 
 const Loginreducer = (state = initialState, action) => {

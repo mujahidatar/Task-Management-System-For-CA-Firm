@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 export const Admdash = () => {
     const [tasks, setTask] = useState([]);
     const navigate = useNavigate();
     const authuser = useSelector((state) => state.auth.user);
-    var temp = 0;
     useEffect(() => {
-        if (authuser === null && temp === 0) {
-            console.log("In the if condition ");
-            toast.error("Login Please");
-            navigate("/");
-            temp++;
-        } else if (authuser === null) {
-
-        } else {
+        if(authuser!==null) {
             axios.get("http://localhost:8080/task").then((response) => {
                 setTask(response.data);
                 console.log(response)
