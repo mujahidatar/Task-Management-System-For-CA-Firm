@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const Createclient = () => {
-    const location = useLocation(); // Get the location object
+    const location = useLocation();
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [emailid, setEmailid] = useState("");

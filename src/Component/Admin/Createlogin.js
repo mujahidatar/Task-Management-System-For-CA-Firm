@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Createlogin = () => {
     const location = useLocation(); // Get the location object
@@ -12,6 +12,7 @@ const Createlogin = () => {
     const [role, setRole] = useState("");
     const [managerid, setManagerid] = useState("");
     const [password, setPassword] = useState("");
+    const navigate=useNavigate();
     var formdata = {
         empId: id,
         empName: name,
@@ -56,6 +57,7 @@ const Createlogin = () => {
             (response) => {
                 if (response.request.status === 200) {
                     alert(`Login ${mybtn}ed successfully`);
+                      navigate("/admdash");
                 }
             }).catch((error) => {
                 alert(error.response.data);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Link, Route, Routes, redirect, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './Home'
 import Mylogin from './Mylogin'
 import Mylogout from './Mylogout'
@@ -17,24 +17,21 @@ import Createclient from './Admin/Createclient'
 import SeeTasks from './Employee/SeeTasks'
 import Admdash from './Admin/Admdash'
 import TaskDetails from './Employee/TaskDetails';
+import Profile from './Profile'
 
 export const Mycomp = () => {
     const [user, setUser] = useState({ username: "null", role: "null" });
     const authuser = useSelector((state) => state.auth.user);
     var temp = 0;
-  //  history=useHistory();
-  //  const navigate = useNavigate();
+ 
     useEffect(() => {
         setUser(authuser);
         console.log("useefeect called");
         if (user === null && temp === 0) {
             console.log("In the if condition ");
-           // toast.error("Login Please");
+          
             console.log("in the mycomp if condition true error")
-           // navigate("/");
-          // return <Redirect to="/" />;
-           //history.push("/");
-          // window.location.assign("/");
+      
             temp++;
         } else if (user === null) {
             
@@ -77,6 +74,7 @@ export const Mycomp = () => {
                     <Route path="getallemployees" element={<Getallemployees />}></Route>
                     <Route path="about" element={<Home />}></Route>
                     <Route path="createlogin" element={<Createlogin />}></Route>
+                    <Route path="profile" element={<Profile />}></Route>
                     <Route path="createlogin/:emp" element={<Createlogin />}></Route>
                 </Routes> 
                 :

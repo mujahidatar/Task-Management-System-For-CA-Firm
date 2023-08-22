@@ -8,7 +8,7 @@ export const Getallemployees = () => {
     useEffect(() => {
         axios.get("http://localhost:8080/employee").then((response) => {
             setEmployees(response.data);
-            console.log(response)
+            console.log( response)
         }, (error) => {
             console.log(error)
         });
@@ -24,6 +24,7 @@ export const Getallemployees = () => {
             await axios.delete(`http://localhost:8080/employee/${emp.empId}`).then(
                 (response) => {
                     if (response.data === "Document Deleted") {
+                        console.log("in the then block"+response.data)
                         alert("Employee Deleted ");
                     } else {
                         alert(response.data);

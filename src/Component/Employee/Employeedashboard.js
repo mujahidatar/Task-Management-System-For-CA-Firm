@@ -43,7 +43,9 @@ const Employeedashboard = () => {
                             </li>
                             <li>
                                 <Link className="nav-link text-white" to="/seetasks" state="REVIEW" >Review</Link>
-
+                            </li>
+                            <li>
+                                <Link className="nav-link text-white" to="/profile" >Profile</Link>
                             </li>
                             <li>
                                 <Link className="nav-link text-white" to="/logout">Logout</Link>

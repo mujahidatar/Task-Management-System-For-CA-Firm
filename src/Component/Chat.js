@@ -74,8 +74,8 @@ function Chat(props) {
             {messages.map((message, index) => (
                 <div>
 
-                    {(user.id === message.senderId) ? <p key={index} style={{ textAlign: "end", fontWeight: 600 }}>{message.timeStamp.getDay()+" "+month[message.timeStamp.getMonth()]+" "+message.msg}</p>
-                        : <p key={index} style={{ fontWeight: 600 }} >{message.msg+"  "+message.timeStamp.getDay()+" "+month[message.timeStamp.getMonth()]}</p>
+                    {(user.id === message.senderId) ? <p key={index} style={{ textAlign: "end", fontWeight: 600 }}>{message.timeStamp?.getDate()+" "+month[message.timeStamp?.getMonth()]+" "+message.msg}</p>
+                        : <p key={index} style={{ fontWeight: 600 }} >{message.msg+"  "+message.timeStamp?.getDate()+" "+month[message.timeStamp?.getMonth()]}</p>
                     }
                 </div>
             ))}

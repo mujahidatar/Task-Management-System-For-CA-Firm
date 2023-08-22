@@ -32,14 +32,6 @@ const Home = () => {
             (response) => {
                 setTasks(response.data);
                 console.log(response);
-
-                // const currentTime = new Date();
-                // const hours = currentTime.getHours();
-                // const minutes = currentTime.getMinutes();
-                // const seconds = currentTime.getSeconds();
-                //   console.log("in the trial"+hours+"  "+minutes+"  "+seconds);
-                // console.log(`Current time: ${hours}:${minutes}:${seconds}`);
-
             }, (error) => {
                 console.log(error);
             }

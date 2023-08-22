@@ -40,8 +40,7 @@ export default function Mylogin() {
 
                     }
                     console.log("first request end");
-                } else {
-                    //alert("Error from login");
+                } else {                    
                     toast.error("Incorrect Username or Password!");
                 }
             }

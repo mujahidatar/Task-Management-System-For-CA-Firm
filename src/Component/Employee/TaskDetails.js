@@ -10,9 +10,14 @@ const TaskDetails = () => {
     const user = useSelector((state) => state.auth.user)
     const navigate = useNavigate();
     const backTrack = () => {
-        navigate("/home");
+        if (user.role === "ADMIN") {
+            navigate("/admdash");
+        } else {
+            navigate("/home");
+        }
+
     }
-    
+
     return (
         <div className='container mt-5'>
             <div className="myrow">
@@ -20,11 +25,11 @@ const TaskDetails = () => {
                     <h2 style={{ fontWeight: 800 }}> {importTask.title}</h2>
                     <p>Status : {importTask.status}</p>
                     <p>Description : {importTask.desc}</p>
-                    <p hidden={user.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>      
-                    <p hidden={user.role === "CLIENT" || user.role === "EMPLOYEE"}>Employee Id : {importTask.empId}</p>              
-                  
-                </div>
-                <div className="mycolumn" style={{ backgroundColor: "#e0e0e0" }}>
+                    <p hidden={user.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>
+                    <p hidden={user.role === "CLIENT" || user.role === "EMPLOYEE"}>Employee Id : {importTask.empId}</p>
+
+                </div >
+                <div hidden={user.role === "ADMIN"} className="mycolumn" style={{ backgroundColor: "#e0e0e0" }}>
                     <Chat taskId={importTask.taskId} />
                 </div>
             </div>

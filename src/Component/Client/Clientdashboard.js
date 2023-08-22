@@ -35,6 +35,9 @@ const Clientdashboard = () => {
                             </li>
                             <li>
                                 <Link className="nav-link text-white " to="/createtask">Create Task</Link>
+                            </li>
+                            <li>
+                                <Link className="nav-link text-white " to="/profile">Profile</Link>
                             </li>                           
                             <li>
                                 <Link className="nav-link text-white fs-5 " to="/logout">Logout</Link>
