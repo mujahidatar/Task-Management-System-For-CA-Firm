@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
 
 const Createlogin = () => {
     const location = useLocation(); // Get the location object
+    const navigate = useNavigate();
+
     const [id, setId] = useState("0");
     const [name, setName] = useState("");
     const [emailid, setEmailid] = useState("");
@@ -12,6 +15,8 @@ const Createlogin = () => {
     const [role, setRole] = useState("");
     const [managerid, setManagerid] = useState("");
     const [password, setPassword] = useState("");
+
+
     var formdata = {
         empId: id,
         empName: name,
@@ -29,7 +34,6 @@ const Createlogin = () => {
         mybtn = "Update";
     }
     useEffect(() => {
-        console.log("in the create login useeffect" + importemp.name + importemp.password);
         setId(importemp.empId);
         setName(importemp.empName);
         setEmailid(importemp.empEmail);
@@ -55,12 +59,28 @@ const Createlogin = () => {
         await axios.post("http://localhost:8080/employee", formdata).then(
             (response) => {
                 if (response.request.status === 200) {
-                    alert(`Login ${mybtn}ed successfully`);
+                    toast.success(`Login ${mybtn}d successfully`);
+                    if(mybtn==="Create")
+                     {   
+                        resetAll();
+                    }
+                    else
+                      {  navigate("/getallemployees");}
                 }
             }).catch((error) => {
-                alert(error.response.data);
-                console.log(error);
+                toast.error(error.response.data);
             });
+    }
+
+    const resetAll = ()=>{
+        setId("");
+        setName("");
+        setEmailid("");
+        setNumber("");
+        setAddress("");
+        setRole("");
+        setManagerid("");
+        setPassword("");
     }
 
     return (
@@ -129,6 +149,7 @@ const Createlogin = () => {
                     </div>
                 </div>
             </form>
+            <ToastContainer />
         </div>
     )
 }

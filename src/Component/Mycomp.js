@@ -19,29 +19,11 @@ import Admdash from './Admin/Admdash'
 import TaskDetails from './Employee/TaskDetails';
 
 export const Mycomp = () => {
-    const [user, setUser] = useState({ username: "null", role: "null" });
+    const [user, setUser] = useState();
     const authuser = useSelector((state) => state.auth.user);
     var temp = 0;
-  //  history=useHistory();
-  //  const navigate = useNavigate();
     useEffect(() => {
         setUser(authuser);
-        console.log("useefeect called");
-        if (user === null && temp === 0) {
-            console.log("In the if condition ");
-           // toast.error("Login Please");
-            console.log("in the mycomp if condition true error")
-           // navigate("/");
-          // return <Redirect to="/" />;
-           //history.push("/");
-          // window.location.assign("/");
-            temp++;
-        } else if (user === null) {
-            
-        } else {
-           
-        }
-
     }, [authuser]);
 
     return (
@@ -60,28 +42,29 @@ export const Mycomp = () => {
                     user && user.role === "CLIENT" && <Clientdashboard />
                 }
                 {
+                    user ?
+                        <Routes>
+                            <Route path="home" element={<Home />}></Route>
+                            <Route path="logout" element={<Mylogout />}></Route>
+                            <Route path="logincreation" element={<Logincreation />}></Route>
+                            <Route path="getallclients" element={<Getallclients />}></Route>
+                            <Route path="createclient" element={<Createclient />}></Route>
+                            <Route path="createlogin/:cliobj" element={<Createclient />}></Route>
+                            <Route path="createtask" element={<Createtask />}></Route>
+                            <Route path="taskdetails" element={<TaskDetails />}></Route>
+                            <Route path="admdash" element={<Admdash />}></Route>
+                            <Route path="seetasks" element={<SeeTasks />}></Route>
+                            <Route path="getallemployees" element={<Getallemployees />}></Route>
+                            <Route path="about" element={<Home />}></Route>
+                            <Route path="createlogin" element={<Createlogin />}></Route>
+                            <Route path="createlogin/:emp" element={<Createlogin />}></Route>
+                        </Routes> :
+                        <Routes >
+                            <Route path="/" element={<Mylogin />}></Route>
+                            <Route path="*" element={<Mylogin isError={true} />}></Route>
+                        </Routes>
 
-                  user ?        
-                <Routes>
-                    <Route path="" element={<Mylogin />}></Route>
-                    <Route path="home" element={<Home />}></Route>
-                    <Route path="logout" element={<Mylogout />}></Route>
-                    <Route path="logincreation" element={<Logincreation />}></Route>
-                    <Route path="getallclients" element={<Getallclients />}></Route>
-                    <Route path="createclient" element={<Createclient />}></Route>
-                    <Route path="createlogin/:cliobj" element={<Createclient />}></Route>
-                    <Route path="createtask" element={<Createtask />}></Route>                   
-                    <Route path="taskdetails" element={<TaskDetails />}></Route>
-                    <Route path="admdash" element={<Admdash />}></Route>
-                    <Route path="seetasks" element={<SeeTasks />}></Route>
-                    <Route path="getallemployees" element={<Getallemployees />}></Route>
-                    <Route path="about" element={<Home />}></Route>
-                    <Route path="createlogin" element={<Createlogin />}></Route>
-                    <Route path="createlogin/:emp" element={<Createlogin />}></Route>
-                </Routes> 
-                :
-                <Mylogin />              
-          }  
+                }
             </BrowserRouter>
         </div>
     )

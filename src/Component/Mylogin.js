@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -7,12 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../Component/multimedia/CA-Logo.png';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function Mylogin() {
+export default function Mylogin({isError}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    var temp = 0;
+    
+    useEffect(()=>{
+        if(isError && temp<1){
+            toast.error("Login Please");
+            temp++;
+        }
+    },[])
 
     const checkuser = async (event) => {
         event.preventDefault();
@@ -20,12 +28,6 @@ export default function Mylogin() {
             username: username,
             password: password
         }
-        var user = {
-            id: "",
-            username: "",
-            role: "",
-            flag:0
-        };
         var myrole = "";
         var temp = "";
         await axios.post("http://localhost:8080/login/authenticate", myuser).then(
@@ -58,7 +60,7 @@ export default function Mylogin() {
 
                         }
                         console.log("adminid is" +tempid)
-                        user = {
+                       var user = {
                             username: username,
                             role: myrole,
                             id: tempid,

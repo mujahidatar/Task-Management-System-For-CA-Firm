@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 export const Getallclients = () => {
     const [client, setClient] = useState([]);
     const navigate = useNavigate();
+    const cliRef = useRef([]);
 
     useEffect(() => {
         axios.get("http://localhost:8080/client").then((response) => {
@@ -21,17 +23,19 @@ export const Getallclients = () => {
     }
 
     const handledeleteClick = async (cliobj) => {
-        const confirmDelete = window.confirm(`Are you sure to delete this Client with Id : ${cliobj.clientId}`);
-        if (confirmDelete) {
+        
             await axios.delete(`http://localhost:8080/client/${cliobj.clientId}`).then(
                 (response) => {
                     if (response.data === "Document Deleted") {
-                        alert("Client Deleted Successfully");
+                        toast.success("Client Deleted Successfully");
+                        cliRef.current.push(client.filter((cli)=>cli.clientId!==cliobj.clientId));
+                        setClient(...cliRef.current);
+                        cliRef.current.pop();
+                    
                     } else {
-                        alert(response.data);
+                        toast.error(response.data);
                     }
-                })
-        }
+                });
     }
     return (
         <div className="container mt-3">
@@ -58,7 +62,7 @@ export const Getallclients = () => {
                                 <td>{cliobj.clientEmail}</td>
                                 <td>{cliobj.clientAddress}</td>                                
                                 <td className='text-center'><a className="btn btn-info" onClick={() => handleClick(cliobj)}>Update</a></td>
-                                <td className='text-center'><a href="" className="btn btn-info" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>                                
+                                <td className='text-center'><a className="btn btn-info" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>                                
                             </tr>
                         ))
                     }

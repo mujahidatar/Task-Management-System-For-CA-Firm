@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Createclient = () => {
+    const navigate = useNavigate();
     const location = useLocation(); // Get the location object
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
@@ -47,12 +50,26 @@ const Createclient = () => {
         await axios.post("http://localhost:8080/client", formdata).then(
             (response) => {
                 if (response.request.status === 200) {
-                    alert(`Client ${mybtn}ed successfully`);
+                    toast.success(`Client ${mybtn}ed successfully`);
+                    if(mybtn==="Create")
+                     {   
+                        resetAll();
+                    }
+                    else
+                      {  navigate("/getallclients");}
                 } 
             }).catch((error) => {
-                alert(error.response.data);
-                console.log(error);
+                toast.error(error.response.data);
             });
+    }
+
+    const resetAll = ()=>{
+        setId("");
+        setName("");
+        setEmailid("");
+        setNumber("");
+        setAddress("");
+        setPassword("");
     }
 
     return (
@@ -100,6 +117,7 @@ const Createclient = () => {
                     </div>
                 </div>
             </form>
+            <ToastContainer />
         </div>
     )
 }

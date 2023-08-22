@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
 
 export const Getallemployees = () => {
     const [employees, setEmployees] = useState([]);
     const navigate = useNavigate();
+    const empRef = useRef([]);
     useEffect(() => {
         axios.get("http://localhost:8080/employee").then((response) => {
             setEmployees(response.data);
-            console.log(response)
         }, (error) => {
-            console.log(error)
+           console.log(error)
         });
 
     }, []);
@@ -19,17 +20,17 @@ export const Getallemployees = () => {
         navigate(`/createlogin`, { state: { emp } });
     }
     const handledeleteClick = async (emp) => {
-        const confirmDelete = window.confirm(`Are you sure to delete this employee with Id : ${emp.empId}`);
-        if (confirmDelete) {
             await axios.delete(`http://localhost:8080/employee/${emp.empId}`).then(
                 (response) => {
                     if (response.data === "Document Deleted") {
-                        alert("Employee Deleted ");
+                        toast.success("Employee Deleted ");
+                        empRef.current.push(employees.filter(em=>em.empId!==emp.empId));
+                        setEmployees(...empRef.current)
+                        empRef.current.pop();
                     } else {
-                        alert(response.data);
+                        toast.error(response.data);
                     }
                 })
-        }
     }
 
     return (
@@ -62,7 +63,7 @@ export const Getallemployees = () => {
                                 <td>{emp.empRole}</td>
                                 <td>{emp.managerId}</td>
                                 <td className='text-center'><a className="btn btn-info" onClick={() => handleClick(emp)}>Update</a></td>
-                                <td className='text-center'><a href="" className="btn btn-info" onClick={() => handledeleteClick(emp)}>Delete</a></td>
+                                <td className='text-center'><a className="btn btn-info" onClick={() => handledeleteClick(emp)}>Delete</a></td>
                             </tr>
                         ))
                     }

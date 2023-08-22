@@ -7,21 +7,9 @@ import { login } from '../../Services/Actions/Authenticationaction';
 const Admindashboard = () => {
     var user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
-    const navigate=useNavigate();
     var flag = user?.flag;
-    var temp = 0;
     useEffect(() => {
-        if (user === null && temp === 0) {
-            console.log("In the if condition ");
-            toast.error("Login Please");
-            navigate("/");
-            temp++;
-        } else if (user === null) {
-
-        } else {
             toastSuccess();
-        }
-
     }, []);
 
     const toastSuccess = () => {
