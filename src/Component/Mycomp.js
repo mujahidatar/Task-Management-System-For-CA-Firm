@@ -59,6 +59,7 @@ export const Mycomp = () => {
                             <Route path="about" element={<Home />}></Route>
                             <Route path="createlogin" element={<Createlogin />}></Route>
                             <Route path="createlogin/:emp" element={<Createlogin />}></Route>
+                            <Route path="profile" element={<Profile />}></Route>
                         </Routes> :
                         <Routes >
                             <Route path="/" element={<Mylogin />}></Route>
