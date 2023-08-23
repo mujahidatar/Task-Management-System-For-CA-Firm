@@ -16,7 +16,11 @@ function Chat(props) {
 
     var id = props.taskId;
     const getMsg = async () => {
-        await axios.post(`http://localhost:8080/chat/${id}`).then(
+        await axios.post(`http://localhost:8080/chat/${id}`,null,
+        {headers: {
+            'Authorization': `Bearer ${authuser.token}`
+        }}
+        ).then(
             (response) => {
                 const modifiedmsg = response.data.map((task) => (
                     task = {
@@ -79,17 +83,21 @@ function Chat(props) {
                     <div className="card-header p-3 bg-info mx-0" style={{"backgroundColor":"#B3FFFA"}}>
                         <h5 className="mb-0">Chat</h5>
                     </div>
-                    <div className="card-body" style={{ "height": "auto", "overflow": "auto" }} ref={scrollContainerRef}>
+                    <div className="card-body" style={{ "height": "45vh", "overflow": "auto" }} ref={scrollContainerRef}>
                         {messages.map((message, index) => (
                             (authuser.id === message.senderId) ?
                                 <>
-                                    <p key={index} className="mb-0 d-flex flex-row justify-content-end" style={{ "background-color": " #f5f6f7;","fontSize": 20 }}>{message.msg}</p>
+                                <div className='d-flex flex-row justify-content-end'>
+                                    <p key={index} className="mb-0 " style={{ "backgroundColor": "#58A1D156","fontSize": 17,"border":"1px solid black","borderRadius":8, "padding":8}}>{message.msg}</p><br/>
+                                </div>
                                     <p className="mb-3 text-muted d-flex flex-row justify-content-end" style={{ "fontSize": 12 }}>{message.timeStamp?.getDate() + " " + month[message.timeStamp?.getMonth()]}</p>
                                 </>
                                 :
                                 <>
-                                    <p key={index} className="mb-0 d-flex flex-row justify-content-start" style={{ "background-color": " #f5f6f7;","fontSize": 20  }} >{message.msg}</p>
-                                    <p className="mb-3 text-muted d-flex flex-row justify-content-start" style={{ "fontSize": 12 }}>{message.timeStamp?.getDate() + " " + month[message.timeStamp?.getMonth()]}</p>
+                                <div className='d-flex flex-row justify-content-start'>
+                                    <p key={index} className="mb-0 " style={{ "backgroundColor": " #00020523","fontSize": 17,"border":"1px solid black","borderRadius":8, "padding":8}} >{message.msg}</p>
+                                </div>
+                                    <p className="mb-1 text-muted d-flex flex-row justify-content-start" style={{ "fontSize": 12 }}>{message.timeStamp?.getDate() + " " + month[message.timeStamp?.getMonth()]}</p>
                                 </>
                         ))}
                     </div>
