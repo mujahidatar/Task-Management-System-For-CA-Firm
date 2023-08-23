@@ -16,7 +16,11 @@ function Chat(props) {
 
     var id = props.taskId;
     const getMsg = async () => {
-        await axios.post(`http://localhost:8080/chat/${id}`).then(
+        await axios.post(`http://localhost:8080/chat/${id}`,null,{
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then(
             (response) => {
                 const modifiedmsg = response.data.map((task) => (
                     task = {
@@ -94,9 +98,9 @@ function Chat(props) {
                         ))}
                     </div>
                     <div className="card-footer d-flex flex-row justify-content-center bg-info">
-                        <input type="text" className="form-control col-sm-5 mx-2" placeholder="Type here" value={newMessage}
+                        <input type="text" htmlFor="send" className="form-control col-sm-5 mx-2" placeholder="Type here" value={newMessage}
                             onChange={(e) => { setNewMessage(e.target.value) }} style={{ "width": "80%" }} />
-                        <button className="btn btn-danger mx-2" onClick={handleSendMessage} type="button" style={{ "width": "auto" }}>Send</button>
+                        <button className="btn btn-danger mx-2" onClick={handleSendMessage} type="button" id="send" style={{ "width": "auto" }}>Send</button>
                     </div>
                 </div>
     );

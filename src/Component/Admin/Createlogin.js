@@ -5,8 +5,9 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 const Createlogin = () => {
-    const location = useLocation(); // Get the location object
+    const location = useLocation();
     const navigate = useNavigate();
+    const [manager, setManager] = useState([]);
     const authuser = useSelector((state) => state.auth.user);
     const [id, setId] = useState("0");
     const [name, setName] = useState("");
@@ -43,6 +44,7 @@ const Createlogin = () => {
         setRole(importemp.empRole);
         setManagerid(importemp.managerId);
         setPassword(importemp.empPassword);
+        getEmp();
     }, [importemp]);
     const createlogindetails = async (event) => {
         event.preventDefault();
@@ -84,6 +86,19 @@ const Createlogin = () => {
         setRole("");
         setManagerid("");
         setPassword("");
+    }
+
+    const getEmp = async () => {
+        await axios.post(`http://localhost:8080/employee/role/MANAGER`, {
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then(
+            (response) => {
+                setManager(response.data);
+            }, (error) => {
+                console.log(error);
+            });
     }
 
     return (
@@ -137,7 +152,15 @@ const Createlogin = () => {
                 <div className="row mb-3">
                     <label htmlFor="managerid" className="col-sm-3 col-form-label" hidden={(role === "MANAGER")} style={{ "fontWeight": "bold", "fontSize": 14 }}>Manager Id</label>
                     <div className="col-sm-9">
-                        <input type="text" className="form-control" id="managerid" hidden={(role === "MANAGER")} value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
+                        <select type="text" className="form-control" id="managerid" hidden={(role === "MANAGER")} value={managerid} onChange={(e) => { setManagerid(e.target.value) }} >
+                            <option value="">Select a Manager</option>
+                            {
+                                manager.map((manag, key) => (
+
+                                    <option value={manag.empId}>{manag.empEmail}</option>
+                                ))
+                            }
+                        </select>
                     </div>
                 </div>
                 <div className="row mb-3">

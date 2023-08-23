@@ -22,7 +22,6 @@ import Profile from './Profile'
 export const Mycomp = () => {
     const [user, setUser] = useState();
     const authuser = useSelector((state) => state.auth.user);
-    var temp = 0;
     useEffect(() => {
         setUser(authuser);
     }, [authuser]);
