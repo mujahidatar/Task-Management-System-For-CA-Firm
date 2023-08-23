@@ -92,4 +92,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return empRepo.findByEmpEmail(email);
 	}
 
+	@Override
+	public List<Employee> findAllByRole(String role) {
+		return empRepo.findByEmpRole(role);
+	}
+
 }

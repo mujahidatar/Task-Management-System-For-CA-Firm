@@ -13,4 +13,6 @@ public interface EmployeeRepository extends MongoRepository<Employee, Integer>{
 	List<Employee> findByManagerId(int id);
 	
 	Employee findByEmpEmail(String email);
+	
+	List<Employee> findByEmpRole(String role);
 }

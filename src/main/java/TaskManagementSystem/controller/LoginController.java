@@ -38,13 +38,11 @@ public class LoginController {
 		System.out.println("in authenticate");
 		
 		this.doAuthenticate(theLog.getUsername(), theLog.getPassword());
-		
+		if(theLog.getRole()!=null)
+			return ResponseEntity.ok(true);
 		UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(theLog.getUsername());
-		
 		String token = this.jwtUtil.generateToken(userDetails);
-		
 		System.out.println("JWT "+token);
-		
 		//Login log = this.logServ.findByKey(theLog.getUsername(), theLog.getPassword());
 		return ResponseEntity.ok(new JwtTokenRes(token));
 	}

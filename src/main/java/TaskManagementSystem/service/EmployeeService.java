@@ -13,4 +13,5 @@ public interface EmployeeService {
 	public long getCount();
 	List<Employee> findByManagerId(int theId);
 	Employee findByEmail(String email);
+	public List<Employee> findAllByRole(String role);
 }
