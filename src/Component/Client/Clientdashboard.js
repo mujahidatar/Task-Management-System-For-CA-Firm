@@ -40,7 +40,7 @@ const Clientdashboard = () => {
                                 <Link className="nav-link text-white " to="/profile">Profile</Link>
                             </li>                           
                             <li>
-                                <Link className="nav-link text-white fs-5 " to="/logout">Logout</Link>
+                                <Link className="nav-link text-white " to="/logout">Logout</Link>
                             </li>
                         </ul>
                     </div>
