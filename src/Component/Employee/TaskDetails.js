@@ -14,6 +14,7 @@ const TaskDetails = () => {
 
         var dateOfCreation = `${dt?.getDate()}/${dt?.getMonth() + 1}/${dt?.getFullYear()}`;
         console.log("timestamp is changed to" + importTask.timeStamp + "  " + dateOfCreation)
+
     })
 
     // var dateOfCreation = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
@@ -36,7 +37,7 @@ const TaskDetails = () => {
                     <p>Status : {importTask.status}</p>
                     <p>Description : {importTask.desc}</p>
                     <p hidden={user.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>
-                    <p hidden={user.role === "CLIENT" || user.role === "EMPLOYEE"}>Employee Id : {importTask.empId}</p>
+                    <p hidden={user.role === "CLIENT" || user.role === "EMPLOYEE"}>Employee Id : {importTask.employeeId}</p>
 
                     {
                         dt = new Date(importTask.timeStamp) && <p>Date of creation : {dt?.getDate() / dt?.getMonth() / dt?.getFullYear()}</p>
