@@ -83,7 +83,6 @@ function Chat(props) {
                     </div>
                     <div className="card-body" style={{ "height": "auto", "overflow": "auto" }} ref={scrollContainerRef}>
                         {messages.map((message, index) => (
-
                             (authuser.id === message.senderId) ?
                                 <>
                                     <p key={index} className="mb-0 d-flex flex-row justify-content-end" style={{ "background-color": " #f5f6f7;","fontSize": 20 }}>{message.msg}</p>
