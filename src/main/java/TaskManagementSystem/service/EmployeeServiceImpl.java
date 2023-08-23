@@ -8,13 +8,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import TaskManagementSystem.entity.Employee;
 import TaskManagementSystem.entity.Login;
 import TaskManagementSystem.enums.Roles;
 import TaskManagementSystem.repository.EmployeeRepository;
-import TaskManagementSystem.repository.LoginRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -24,6 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	LoginService logServ;
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	@Autowired
+	PasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public List<Employee> findAll() {
@@ -58,7 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			logServ.save(log);
 		} else {
 			Query query = new Query(Criteria.where("username").is(theEmp.getEmpEmail()));
-			Update update = new Update().set("password", theEmp.getEmpPassword());
+			Update update = new Update().set("password", bCryptPasswordEncoder.encode(theEmp.getEmpPassword()));
 
 			mongoTemplate.updateFirst(query, update, Login.class);
 		}
