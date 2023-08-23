@@ -2,14 +2,20 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 export const Getallclients = () => {
+    const authuser = useSelector((state) => state.auth.user);
     const [client, setClient] = useState([]);
     const navigate = useNavigate();
     const cliRef = useRef([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/client").then((response) => {
+        axios.get("http://localhost:8080/client", {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then((response) => {
             setClient(response.data);
         }, (error) => {
             console.log(error)
@@ -23,24 +29,28 @@ export const Getallclients = () => {
     }
 
     const handledeleteClick = async (cliobj) => {
-        
-            await axios.delete(`http://localhost:8080/client/${cliobj.clientId}`).then(
-                (response) => {
-                    if (response.data === "Document Deleted") {
-                        toast.success("Client Deleted Successfully");
-                        cliRef.current.push(client.filter((cli)=>cli.clientId!==cliobj.clientId));
-                        setClient(...cliRef.current);
-                        cliRef.current.pop();
-                    
-                    } else {
-                        toast.error(response.data);
-                    }
-                });
+
+        await axios.delete(`http://localhost:8080/client/${cliobj.clientId}`, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then(
+            (response) => {
+                if (response.data === "Document Deleted") {
+                    toast.success("Client Deleted Successfully");
+                    cliRef.current.push(client.filter((cli) => cli.clientId !== cliobj.clientId));
+                    setClient(...cliRef.current);
+                    cliRef.current.pop();
+
+                } else {
+                    toast.error(response.data);
+                }
+            });
     }
     return (
         <div className="container mt-3">
             <h2 className='text-center'>Clients</h2>
-            <table className="table table-striped table-bordered table-hover" style={{"border":"2px solid skyblue","backgroundColor":"#C9E5FF"}}>
+            <table className="table table-striped table-bordered table-hover" style={{ "border": "2px solid skyblue", "backgroundColor": "#C9E5FF" }}>
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -54,15 +64,15 @@ export const Getallclients = () => {
                 </thead>
                 <tbody>
                     {
-                        client.map((cliobj,index) => (
+                        client.map((cliobj, index) => (
                             <tr key={index}>
                                 <th scope="row">{cliobj.clientId}</th>
                                 <td>{cliobj.clientName}</td>
                                 <td>{cliobj.clientContact}</td>
                                 <td>{cliobj.clientEmail}</td>
-                                <td>{cliobj.clientAddress}</td>                                
+                                <td>{cliobj.clientAddress}</td>
                                 <td className='text-center'><a className="btn btn-info" onClick={() => handleClick(cliobj)}>Update</a></td>
-                                <td className='text-center'><a className="btn btn-info" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>                                
+                                <td className='text-center'><a className="btn btn-danger" onClick={() => handledeleteClick(cliobj)} >Delete</a></td>
                             </tr>
                         ))
                     }

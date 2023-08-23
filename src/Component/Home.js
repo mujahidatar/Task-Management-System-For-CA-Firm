@@ -11,14 +11,11 @@ const Home = () => {
     var temp = 0;
 
     useEffect(() => {
-        console.log("useefeect called");
         if (authuser === null && temp < 1) {
-            console.log("In the if condition  of home");
             toast.error("Login Please");
             navigate("/");
             temp++;
         } else if (authuser !== null) {
-            console.log("in ")
             myrender();
         }
     }, []);
@@ -28,7 +25,11 @@ const Home = () => {
     const myrender = () => {
         var temprole = authuser?.role;
         temprole = temprole.toLowerCase();
-        axios.post(`http://localhost:8080/task/${temprole}/${authuser.id}`).then(
+        axios.post(`http://localhost:8080/task/${temprole}/${authuser.id}`, null, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then(
             (response) => {
                 setTasks(response.data);
                 console.log(response);
@@ -40,8 +41,6 @@ const Home = () => {
     const getTaskDetails = (task) => {
         navigate(`/taskdetails`, { state: { task } });
     }
-
-
     return (
         <div className='container mt-3'>
             <table className="table table-striped table-bordered table-hover" style={{ "border": "2px solid skyblue", "backgroundColor": "#C9E5FF" }}>

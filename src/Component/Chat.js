@@ -1,12 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import PerfectScrollbar from 'perfect-scrollbar';
+import 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 function Chat(props) {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const user = useSelector((state) => state.auth.user);  
+    const authuser = useSelector((state) => state.auth.user);
+    const scrollContainerRef = useRef(null);
 
     var updatedMessages;
 
@@ -23,12 +25,9 @@ function Chat(props) {
                         ...task,
                         timeStamp: new Date(task.timeStamp)
                     }
-
                 ));
-                console.log("modified time is " + modifiedmsg);
                 setMessages(modifiedmsg);
-
-                console.log(response.data);
+                scrollToBottom();
             }, (error) => {
                 console.log(error);
             }
@@ -40,15 +39,17 @@ function Chat(props) {
         setNewMessage(newMessage.trim());
         if (newMessage.trim() === '')
             return;
-        console.log("user id is " + user.id)
         const mychat = {
             taskId: props.taskId,
-            senderId: user.id,
+            senderId: authuser.id,
             msg: newMessage
         }
 
-
-        await axios.post(`http://localhost:8080/chat`, mychat).then(
+        await axios.post(`http://localhost:8080/chat`, mychat, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then(
             (response) => {
                 console.log(response.data);
                 updatedMessages = [...messages, { text: newMessage }];
@@ -56,41 +57,51 @@ function Chat(props) {
                 setNewMessage('');
             }
         ).catch((error) => {
-
+            console.log(error);
         }).finally(() => {
             getMsg();
         })
 
 
         console.log("updated messages" + updatedMessages);
+
     };
-   
-    const month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const scrollToBottom = () => {
+        if (scrollContainerRef.current) {
+            const scrollContainer = scrollContainerRef.current;
+            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+    }
 
     return (
-        <div className="container h-100" style={{ backgroundColor: "#e0e0e0", height: "70vh" }}>
-            <h2>Chat</h2>
+                <div className="card p-0" >
+                    <div className="card-header p-3 bg-info mx-0" style={{"backgroundColor":"#B3FFFA"}}>
+                        <h5 className="mb-0">Chat</h5>
+                    </div>
+                    <div className="card-body" style={{ "height": "auto", "overflow": "auto" }} ref={scrollContainerRef}>
+                        {messages.map((message, index) => (
 
-            {messages.map((message, index) => (
-                <div>
-
-                    {(user.id === message.senderId) ? <p key={index} style={{ textAlign: "end", fontWeight: 600 }}>{message.timeStamp?.getDate()+" "+month[message.timeStamp?.getMonth()]+" "+message.msg}</p>
-                        : <p key={index} style={{ fontWeight: 600 }} >{message.msg+"  "+message.timeStamp?.getDate()+" "+month[message.timeStamp?.getMonth()]}</p>
-                    }
+                            (authuser.id === message.senderId) ?
+                                <>
+                                    <p key={index} className="mb-0 d-flex flex-row justify-content-end" style={{ "background-color": " #f5f6f7;","fontSize": 20 }}>{message.msg}</p>
+                                    <p className="mb-3 text-muted d-flex flex-row justify-content-end" style={{ "fontSize": 12 }}>{message.timeStamp?.getDate() + " " + month[message.timeStamp?.getMonth()]}</p>
+                                </>
+                                :
+                                <>
+                                    <p key={index} className="mb-0 d-flex flex-row justify-content-start" style={{ "background-color": " #f5f6f7;","fontSize": 20  }} >{message.msg}</p>
+                                    <p className="mb-3 text-muted d-flex flex-row justify-content-start" style={{ "fontSize": 12 }}>{message.timeStamp?.getDate() + " " + month[message.timeStamp?.getMonth()]}</p>
+                                </>
+                        ))}
+                    </div>
+                    <div className="card-footer d-flex flex-row justify-content-center bg-info">
+                        <input type="text" className="form-control col-sm-5 mx-2" placeholder="Type here" value={newMessage}
+                            onChange={(e) => { setNewMessage(e.target.value) }} style={{ "width": "80%" }} />
+                        <button className="btn btn-danger mx-2" onClick={handleSendMessage} type="button" style={{ "width": "auto" }}>Send</button>
+                    </div>
                 </div>
-            ))}
-
-
-
-            <div class="input-group mb-3">
-                <input type="text" className="form-control" placeholder="Type here" value={newMessage}
-                    onChange={(e) => { setNewMessage(e.target.value) }} />
-                {/* <button className="btn btn-secondary" onClick={handleSendMessage} type="button" >Button</button> */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16" onClick={handleSendMessage}>
-                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
-                </svg>
-            </div>
-        </div>
     );
 }
 

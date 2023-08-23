@@ -8,7 +8,7 @@ const Createtask = () => {
     const [file, setFile] = useState([]);
 
     const authuser = useSelector((state) => state.auth.user);
-    
+
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
@@ -24,7 +24,11 @@ const Createtask = () => {
             status: "NEW",
             clientId: authuser.id
         }
-        await axios.post("http://localhost:8080/task", task).then((response) => {
+        await axios.post("http://localhost:8080/task", task, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then((response) => {
             console.log(response);
             if (response.data != null) {
 
@@ -55,7 +59,7 @@ const Createtask = () => {
                     <label for="files" className="col-sm-2 col-form-label " style={{ "fontWeight": "bold", "fontSize": 14 }}>Attach Files</label>
                     <div className="col-sm-10">
                         <input className="form-control form-control-sm" type="file" accept=".pdf" id="files" multiple on onChange={handleFileChange} />
-                    </div>                   
+                    </div>
                 </div>
                 <div className="row mb-3 pt-1">
                     <div className="col-sm-10" style={{ "margin": "auto", "width": 360 }}>

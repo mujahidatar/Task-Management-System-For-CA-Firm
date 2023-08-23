@@ -6,21 +6,22 @@ import { login } from '../Services/Actions/Authenticationaction';
 import { useNavigate } from 'react-router-dom';
 import logo from '../Component/multimedia/CA-Logo.png';
 import { ToastContainer, toast } from 'react-toastify';
+import jwtDecode from 'jwt-decode';
 
-export default function Mylogin({isError}) {
+export default function Mylogin({ isError }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     var temp = 0;
-    
-    useEffect(()=>{
-        if(isError && temp<1){
+    var token;
+    useEffect(() => {
+        if (isError && temp < 1) {
             toast.error("Login Please");
             temp++;
         }
-    },[])
+    }, [])
 
     const checkuser = async (event) => {
         event.preventDefault();
@@ -32,41 +33,45 @@ export default function Mylogin({isError}) {
         var temp = "";
         await axios.post("http://localhost:8080/login/authenticate", myuser).then(
             async (response) => {
-                console.log(response);
+                token = response.data.token;
+                const decodedToken = jwtDecode(token);
+                console.log("decoded token" + decodedToken);
                 if (response.data !== '') {
-                    myrole = response.data.role;
+                    myrole = decodedToken.role;
                     if (myrole === "EMPLOYEE" || myrole === "MANAGER" || myrole === "ADMIN") {
                         temp = "employee";
                     } else {
                         temp = "client";
-
                     }
                     console.log("first request end");
-                } else {                    
+                } else {
                     toast.error("Incorrect Username or Password!");
                 }
             }
         ).then(async () => {
-            console.log("in the second request username is" + username);
             if (temp === "employee" || temp === "client") {
-                await axios.post(`http://localhost:8080/${temp}/mail/${username}`).then(
+                await axios.post(`http://localhost:8080/${temp}/mail/${username}`, null, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(
                     (response) => {
+                        console.log("request with header done" + response);
                         var tempid;
                         if (temp === "employee") {
                             tempid = response.data.empId;
                         } else if (temp === "client") {
                             tempid = response.data.clientId
-
                         }
-                        console.log("adminid is" +tempid)
-                       var user = {
+                        console.log("adminid is" + tempid)
+                        var user = {
                             username: username,
                             role: myrole,
                             id: tempid,
-                            flag: 0
+                            flag: 0,
+                            token: token
                         }
                         dispatch(login(user));
-
                         if (user.role === "ADMIN") {
                             navigate("/admdash");
                         }

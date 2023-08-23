@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer,toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Createlogin = () => {
     const location = useLocation(); // Get the location object
     const navigate = useNavigate();
-
+    const authuser = useSelector((state) => state.auth.user);
     const [id, setId] = useState("0");
     const [name, setName] = useState("");
     const [emailid, setEmailid] = useState("");
@@ -56,23 +57,25 @@ const Createlogin = () => {
             empPassword: password
         }
 
-        await axios.post("http://localhost:8080/employee", formdata).then(
+        await axios.post("http://localhost:8080/employee", formdata, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then(
             (response) => {
                 if (response.request.status === 200) {
                     toast.success(`Login ${mybtn}d successfully`);
-                    if(mybtn==="Create")
-                     {   
+                    if (mybtn === "Create") {
                         resetAll();
                     }
-                    else
-                      {  navigate("/getallemployees");}
+                    else { navigate("/getallemployees"); }
                 }
             }).catch((error) => {
                 toast.error(error.response.data);
             });
     }
 
-    const resetAll = ()=>{
+    const resetAll = () => {
         setId("");
         setName("");
         setEmailid("");
@@ -84,41 +87,41 @@ const Createlogin = () => {
     }
 
     return (
-        <div className="container mt-3 py-2" style={{"width":900,"border":"2px solid skyblue","backgroundColor":"#B3E0F5","padding":"0px 100px"}}>
-            
+        <div className="container mt-3 py-2" style={{ "width": 900, "border": "2px solid skyblue", "backgroundColor": "#B3E0F5", "padding": "0px 100px" }}>
+
             <form onSubmit={createlogindetails}>
                 <div className="row mb-3">
-                    <label className="col-sm-3 col-form-label fd-6" style={{"fontWeight":"bold"}} hidden>Employee Id</label>
+                    <label className="col-sm-3 col-form-label fd-6" style={{ "fontWeight": "bold" }} hidden>Employee Id</label>
                     <div className="col-sm-10">
                         <input type="text" className="form-control" value={id || null} hidden />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="name" className="col-sm-3 col-form-label " style={{"fontWeight":"bold","fontSize":14}}>Employee Name</label>
+                    <label htmlFor="name" className="col-sm-3 col-form-label " style={{ "fontWeight": "bold", "fontSize": 14 }}>Employee Name</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" id="name" value={name} required onChange={(e) => { setName(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="email" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Email Id</label>
+                    <label htmlFor="email" className="col-sm-3 col-form-label" style={{ "fontWeight": "bold", "fontSize": 14 }}>Email Id</label>
                     <div className="col-sm-9">
                         <input type="email" className="form-control" id="email" value={emailid} disabled={temp} onChange={(e) => { setEmailid(e.target.value) }} required />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="number" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Contact Number</label>
+                    <label htmlFor="number" className="col-sm-3 col-form-label" style={{ "fontWeight": "bold", "fontSize": 14 }}>Contact Number</label>
                     <div className="col-sm-9">
                         <input type="number" className="form-control" id="number" value={number} onChange={(e) => { setNumber(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="address" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Address</label>
+                    <label htmlFor="address" className="col-sm-3 col-form-label" style={{ "fontWeight": "bold", "fontSize": 14 }}>Address</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" id="address" value={address} onChange={(e) => { setAddress(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="role" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Select Role</label>
+                    <label htmlFor="role" className="col-sm-3 col-form-label" style={{ "fontWeight": "bold", "fontSize": 14 }}>Select Role</label>
                     <div className="col-sm-9">
                         <select id="role" className="form-control" value={role} onChange={(e) => {
                             setRole(e.target.value);
@@ -132,20 +135,20 @@ const Createlogin = () => {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="managerid" className="col-sm-3 col-form-label" hidden={(role === "MANAGER")} style={{"fontWeight":"bold","fontSize":14}}>Manager Id</label>
+                    <label htmlFor="managerid" className="col-sm-3 col-form-label" hidden={(role === "MANAGER")} style={{ "fontWeight": "bold", "fontSize": 14 }}>Manager Id</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" id="managerid" hidden={(role === "MANAGER")} value={managerid} onChange={(e) => { setManagerid(e.target.value) }} />
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label htmlFor="password" className="col-sm-3 col-form-label" style={{"fontWeight":"bold","fontSize":14}}>Password</label>
+                    <label htmlFor="password" className="col-sm-3 col-form-label" style={{ "fontWeight": "bold", "fontSize": 14 }}>Password</label>
                     <div className="col-sm-9">
                         <input type="password" className="form-control" id="password" value={password} onChange={(e) => { setPassword(e.target.value) }} required />
                     </div>
                 </div>
                 <div className="row mb-3 pt-1">
-                    <div className="col-sm-10" style={{"margin":"auto","width":360}}>
-                        <input type="submit" className="form-control btn btn-info" value={mybtn} style={{"fontWeight":"bold"}}/>
+                    <div className="col-sm-10" style={{ "margin": "auto", "width": 360 }}>
+                        <input type="submit" className="form-control btn btn-info" value={mybtn} style={{ "fontWeight": "bold" }} />
                     </div>
                 </div>
             </form>

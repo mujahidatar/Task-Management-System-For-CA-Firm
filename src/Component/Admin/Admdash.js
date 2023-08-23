@@ -8,8 +8,13 @@ export const Admdash = () => {
     const navigate = useNavigate();
     const authuser = useSelector((state) => state.auth.user);
     useEffect(() => {
-        if(authuser!==null) {
-            axios.get("http://localhost:8080/task").then((response) => {
+        console.log("in admdash token is :   "+authuser.token)
+        if (authuser !== null) {
+            axios.get("http://localhost:8080/task",{
+                headers: {
+                    'Authorization': `Bearer ${authuser.token}`
+                }
+            }).then((response) => {
                 setTask(response.data);
                 console.log(response)
             }, (error) => {
