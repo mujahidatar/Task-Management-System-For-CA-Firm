@@ -1,28 +1,48 @@
 import React, { useEffect } from 'react';
-import "./TaskDetails.css"
+import "./TaskDetails.css";
+import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Chat from '../Chat';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Services/Actions/Authenticationaction';
 
 const TaskDetails = () => {
     const location = useLocation();
-    const importTask = location.state?.task;
-    console.log("in the taskdetails" + location.state?.task.timeStamp);
-    var dt;
-    useEffect(() => {
-        dt = new Date(importTask.timeStamp);
-
-        var dateOfCreation = `${dt?.getDate()}/${dt?.getMonth() + 1}/${dt?.getFullYear()}`;
-        console.log("timestamp is changed to" + importTask.timeStamp + "  " + dateOfCreation)
-
-    })
-
-    // var dateOfCreation = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
-    console.log("timestamp is changed to" + importTask.timeStamp + "  ")
-    const user = useSelector((state) => state.auth.user)
+    var authuser = useSelector((state) => state.auth.user)
     const navigate = useNavigate();
+    const importTask = location.state?.task;
+    var dt = new Date(importTask.timeStamp);
+    var dateOfCreation = `${dt?.getDate()}/${dt?.getMonth() + 1}/${dt?.getFullYear()}`;
+    var temp = 0;
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        if(temp<1){
+            checkToken();
+            temp++;
+        }
+    },[]);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
+        });
+    }
+    
     const backTrack = () => {
-        if (user.role === "ADMIN") {
+        if (authuser.role === "ADMIN") {
             navigate("/admdash");
         } else {
             navigate("/home");
@@ -36,12 +56,11 @@ const TaskDetails = () => {
                     <h2 style={{ fontWeight: 800 }}> {importTask.title}</h2>
                     <p>Status : {importTask.status}</p>
                     <p>Description : {importTask.desc}</p>
-                    <p hidden={user.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>
-                    <p hidden={user.role === "CLIENT" || user.role === "EMPLOYEE"}>Employee Id : {importTask.employeeId}</p>
+                    <p hidden={authuser.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>
+                    <p hidden={authuser.role === "CLIENT" || authuser.role === "EMPLOYEE"}>Employee Id : {importTask.employeeId}</p>
 
-                    {
-                        dt = new Date(importTask.timeStamp) && <p>Date of creation : {dt?.getDate() / dt?.getMonth() / dt?.getFullYear()}</p>
-                    }
+                     <p>Date of creation : {dateOfCreation}</p>
+                    
 
                     <div className="row mb-3 mt-auto" >
                         <div className="col-sm-10">
@@ -49,7 +68,7 @@ const TaskDetails = () => {
                         </div>
                     </div>
                 </div >
-                <div hidden={user.role === "ADMIN"} className="mycolumn row col-xl-2 col-sm-12 col-md-6 col-lg-4" style={{ backgroundColor: "#e0e0e0" }}>
+                <div hidden={authuser.role === "ADMIN"} className="mycolumn row col-xl-2 col-sm-12 col-md-6 col-lg-4" style={{ backgroundColor: "#e0e0e0" }}>
                     <Chat taskId={importTask.taskId} />
                 </div>
             </div>

@@ -2,29 +2,54 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Services/Actions/Authenticationaction';
 
 export const Getallemployees = () => {
-    const authuser=useSelector((state)=>state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
     const [employees, setEmployees] = useState([]);
     const navigate = useNavigate();
     const empRef = useRef([]);
+    const dispatch = useDispatch();
+    var temp = 0;
+
     useEffect(() => {
-        axios.get("http://localhost:8080/employee", {
+        if (temp < 1) {
+            checkToken();
+            axios.get("http://localhost:8080/employee", {
+                headers: {
+                    'Authorization': `Bearer ${authuser.token}`
+                }
+            }).then((response) => {
+                setEmployees(response.data);
+            }, (error) => {
+                console.log(error)
+            });
+        }
+    }, []);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
             headers: {
-                'Authorization': `Bearer ${authuser.token}`
+                'Authorization': `Bearer ${authuser?.token}`
             }
         }).then((response) => {
-            setEmployees(response.data);
-        }, (error) => {
-            console.log(error)
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
         });
-
-    }, []);
+    }
 
     const handleClick = (emp) => {
         navigate(`/createlogin`, { state: { emp } });
     }
+
     const handledeleteClick = async (emp) => {
         await axios.delete(`http://localhost:8080/employee/${emp.empId}`, {
             headers: {

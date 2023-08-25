@@ -2,26 +2,49 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Services/Actions/Authenticationaction';
 export const Getallclients = () => {
-    const authuser = useSelector((state) => state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
     const [client, setClient] = useState([]);
     const navigate = useNavigate();
     const cliRef = useRef([]);
+    const dispatch = useDispatch();
+    var temp = 0;
 
     useEffect(() => {
-        axios.get("http://localhost:8080/client", {
+        if (temp < 1) {
+            checkToken();
+            axios.get("http://localhost:8080/client", {
+                headers: {
+                    'Authorization': `Bearer ${authuser.token}`
+                }
+            }).then((response) => {
+                setClient(response.data);
+            }, (error) => {
+                console.log(error)
+            });
+            temp++;
+        }
+    }, []);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
             headers: {
-                'Authorization': `Bearer ${authuser.token}`
+                'Authorization': `Bearer ${authuser?.token}`
             }
         }).then((response) => {
-            setClient(response.data);
-        }, (error) => {
-            console.log(error)
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
         });
-
-    }, []);
+    }
 
     const handleClick = (cliobj) => {
         console.log(cliobj.clientName);

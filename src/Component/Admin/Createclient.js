@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../Services/Actions/Authenticationaction';
 
 const Createclient = () => {
-    const authuser=useSelector((state)=>state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
     const navigate = useNavigate();
     const location = useLocation(); // Get the location object
     const [id, setId] = useState(null);
@@ -28,15 +29,40 @@ const Createclient = () => {
     if (location.state) {
         mybtn = "Update";
     }
+    const dispatch = useDispatch();
+    var temp = 0;
+
     useEffect(() => {
-        console.log("in the create client useeffect" + importclient.clientName + importclient.clientPassword);
-        setId(importclient.clientId);
-        setName(importclient.clientName);
-        setEmailid(importclient.clientEmail);
-        setNumber(importclient.clientContact);
-        setAddress(importclient.clientAddress);
-        setPassword(importclient.clientPassword);
+        if (temp < 1) {
+            checkToken();
+            console.log("in the create client useeffect" + importclient.clientName + importclient.clientPassword);
+            setId(importclient.clientId);
+            setName(importclient.clientName);
+            setEmailid(importclient.clientEmail);
+            setNumber(importclient.clientContact);
+            setAddress(importclient.clientAddress);
+            setPassword(importclient.clientPassword);
+            temp++;
+        }
     }, []);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
+        });
+    }
 
     const createlogindetails = async (event) => {
         event.preventDefault();

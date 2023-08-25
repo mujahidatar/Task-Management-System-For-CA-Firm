@@ -3,22 +3,31 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../Services/Actions/Authenticationaction';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../Component/multimedia/CA-Logo.png';
 import { ToastContainer, toast } from 'react-toastify';
 import jwtDecode from 'jwt-decode';
 
-export default function Mylogin({ isError }) {
+export default function Mylogin({ isError, msg }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+    var logError = location.state?.err;
     var temp = 0;
     var token;
     useEffect(() => {
-        if (isError && temp < 1) {
-            toast.error("Login Please");
-            temp++;
+        if (temp < 1) {
+            console.log("this is log error " + logError + " " + isError);
+            if (isError && temp < 1 && logError === undefined) {
+                toast.error(msg);
+                temp++;
+            }
+            else if (logError !== null && temp < 1 && !isError) {
+                toast.error(logError);
+                temp++;
+            }
         }
     }, [])
 
@@ -42,7 +51,7 @@ export default function Mylogin({ isError }) {
                     } else {
                         temp = "client";
                     }
-                } 
+                }
             }
         ).then(async () => {
             if (temp === "employee" || temp === "client") {
@@ -51,7 +60,7 @@ export default function Mylogin({ isError }) {
                         'Authorization': `Bearer ${token}`
                     }
                 }).then(
-                    (response) => {                    
+                    (response) => {
                         var tempid;
                         if (temp === "employee") {
                             tempid = response.data.empId;
@@ -64,6 +73,7 @@ export default function Mylogin({ isError }) {
                             role: myrole,
                             id: tempid,
                             flag: 0,
+                            checkFlag: 0,
                             token: token
                         }
                         dispatch(login(user));

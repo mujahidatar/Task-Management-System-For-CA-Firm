@@ -5,21 +5,22 @@ import { login } from '../../Services/Actions/Authenticationaction';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Employeedashboard = () => {
-    var user = useSelector((state) => state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
-    var flag = user?.flag;
+    var flag = authuser?.flag;
     useEffect(() => {
         toastSuccess();
+        //checkToken(authuser);
     }, []);
 
     const toastSuccess = () => {
         if (flag === 0) {
-            user = {
-                ...user,
+            authuser = {
+                ...authuser,
                 flag: 1
             }
             flag = 1;
-            dispatch(login(user));
+            dispatch(login(authuser));
             toast.success("Login Successfull !");
         }
     }
