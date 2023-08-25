@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { logout } from '../Services/Actions/Authenticationaction';
+import { async } from 'q';
 
 const Profile = () => {
     var authuser = useSelector((state) => state.auth.user);
@@ -32,19 +33,7 @@ const Profile = () => {
         }
     }
 
-    const handleUpdate = async (e) => {
-        await axios.post(`http://localhost:8080/${authRole}`, mydata, {
-            headers: {
-                'Authorization': `Bearer ${authuser.token}`
-            }
-        }).then(
-            (response) => {
-                toast.success("Updated Successfully");
-            }, (error) => {
-                toast.error(error.response.data);
-            }
-        )
-    }
+
     if (authRole === "employee") {
         var mydata = {
             empId: id,
@@ -124,6 +113,23 @@ const Profile = () => {
         });
     }
 
+    const handleUpdate = async (e) => {
+
+        console.log(authuser.token);
+        await axios.post(`http://localhost:8080/${authRole}`, mydata, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
+            }
+        }).then(
+            (response) => {
+                toast.success("Password Updated Successfully");
+                toggleVar();
+            }, (error) => {
+                toast.error(error.response.data);
+            }
+        )
+    }
+
     const handleCompare = () => {
         console.log("onchange called")
         newPassword = document.getElementById("newpassword");
@@ -134,27 +140,42 @@ const Profile = () => {
             document.getElementById("validFeedback").style.display = "none";
         } else {
             document.getElementById("validFeedback").style.display = 'block';
-            document.getElementById("validFeedback").innerHTML = "password doosent match";
+            document.getElementById("validFeedback").innerHTML = "Password Dosen't Match";
         }
     }
-    var user = {
-        username: authuser.username,
-        password: password,
-        role: authuser.role
-    }
 
-    const updatePassword = () => {
-        axios.post(`http://localhost:8080/login/authenticate`, user,
+
+    const updatePassword = async (e) => {
+        e.preventDefault();
+        var user = {
+            username: authuser.username,
+            password: password,
+            role: authuser.role
+        }
+        console.log(user);
+        await axios.post(`http://localhost:8080/login/authenticate`, user,
         ).then(
             (response) => {
                 console.log(response);
                 if (response.data === true) {
-                    setPassword(newPassword);
+                    // setPassword(newPassword);
+                    if (user.role !== "CLIENT") {
+                        mydata = {
+                            ...mydata,
+                            empPassword: newPassword
+                        }
+                    }else{
+                        mydata = {
+                            ...mydata,
+                            clientPassword: newPassword
+                        }
+                    }
                     handleUpdate();
                 }
             }
         ).catch((error) => {
-            toast.error(error.response.data);
+            console.log(error.response.data);
+            toast.error("Invalid Old Password");
         })
     }
 
@@ -175,7 +196,7 @@ const Profile = () => {
                             <div style={{ "fontWeight": "bold", "float": "right" }}>
                                 <input type="button" className="form-control btn btn-info " value={toggle} onClick={() => { toggleVar() }} style={{ "fontWeight": "bold", "float": "right" }} />
                             </div>
-                            <div className='' style={{ "margin": "auto", "width": 200, "float": "center" }}>
+                            <div style={{ "margin": "auto", "width": 200, "float": "center" }}>
                                 <h5 className="my-0 col-sm-9 d-inline">{myuser?.empName || myuser?.clientName}</h5>
                                 <br />
                                 <p className="text-muted mb-0 col-sm-9 d-inline">({authuser.role})</p>
@@ -194,7 +215,7 @@ const Profile = () => {
                                                 <p className="mb-0">Id</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empId || myuser?.clientId}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empId || myuser?.clientId} readOnly></input>
                                             </div>
                                         </div>
                                         <hr hidden={myuser?.empRole === "ADMIN"} />
@@ -203,7 +224,7 @@ const Profile = () => {
                                                 <p className="mb-0"  >Name</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empName || myuser?.clientName}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empName || myuser?.clientName} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -212,16 +233,16 @@ const Profile = () => {
                                                 <p className="mb-0">Email</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empEmail || myuser?.clientEmail}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empEmail || myuser?.clientEmail} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row justify-content-center" hidden={authRole === "client"}>
+                                        <div className="row justify-content-center" hidden={authRole === "client"} >
                                             <div className="col-sm-1">
                                                 <p className="mb-0">Role</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empRole}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empRole} readOnly></input>
                                             </div>
                                         </div>
                                         <hr hidden={authRole === "client"} />
@@ -233,7 +254,7 @@ const Profile = () => {
                                                         <p className="mb-0">Manager ID</p>
                                                     </div>
                                                     <div className="col-sm-2">
-                                                        <input className="text-muted mb-0" defaultValue={myuser?.managerId}></input>
+                                                        <input className="text-muted mb-0" defaultValue={myuser?.managerId} readOnly></input>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -272,13 +293,13 @@ const Profile = () => {
                         <div className="col-lg-12">
                             <div className="card">
                                 <div className="card-body">
-                                    <form>
+                                    <form onSubmit={(e) => { updatePassword(e) }}>
                                         <div className="row justify-content-center"  >
                                             <div className="col-sm-2">
-                                                <p className="mb-0" onChange={(e) => setPassword(e.target.value)}>Current Password</p>
+                                                <p className="mb-0" >Current Password</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input type='password' className="text-muted mb-0" ></input>
+                                                <input type='password' className="text-muted mb-0" onChange={(e) => setPassword(e.target.value)}></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -304,7 +325,7 @@ const Profile = () => {
                                         <div className="row justify-content-center">
                                             <div className="col-sm-6" style={{ "margin": "auto", "width": 200 }}>
                                                 <input type="submit" className="form-control btn btn-info" value="Change Password" style={{ "fontWeight": "bold" }}
-                                                    onClick={() => { toggleVar(); updatePassword() }} />
+                                                />
                                             </div>
                                         </div>
                                     </form>

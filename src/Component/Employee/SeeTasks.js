@@ -165,7 +165,7 @@ const SeeTasks = () => {
                                             {
                                                 emp.map((empobj, index) => (
                                                     <li key={index}>
-                                                        <button className="dropdown-item btn btn-primary" href="#" onClick={() => assignTask(tk, empobj.empId)} >{empobj.empEmail}</button>
+                                                        <button className="dropdown-item btn btn-primary" href="#" onClick={() => assignTask(tk, empobj.empId)} >{empobj.empName}</button>
                                                     </li>
                                                 ))
                                             }

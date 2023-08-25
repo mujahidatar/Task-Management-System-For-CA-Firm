@@ -48,8 +48,9 @@ const TaskDetails = () => {
             navigate("/home");
         }
     }
-    const deleteTask = () => {
-        axios.delete(`http://localhost:8080/task/${importTask.taskId}`, {
+
+    const deleteTask = async () => {
+      await  axios.delete(`http://localhost:8080/task/${importTask.taskId}`, {
             headers: {
                Authorization: `Bearer ${authuser.token}`
             }
@@ -69,15 +70,14 @@ const TaskDetails = () => {
                     <p hidden={authuser.role !== "ADMIN"}>Manager Id : {importTask.managerId}</p>
                     <p hidden={authuser.role === "CLIENT" || authuser.role === "EMPLOYEE"}>Employee Id : {importTask.employeeId}</p>
 
-                     <p>Date of creation : {dateOfCreation}</p>
-                    
+                     <p>Date of creation : {dateOfCreation}</p>                    
 
                     <div className="row mb-3 mt-auto" >
                         <div className="col-sm-6 d-flex justify-content-start " >
                             <input type="submit" className="btn btn-info" onClick={backTrack} value="Back" />
                         </div>
                         <div className="col-sm-6 d-flex justify-content-start " >
-                            <input type="submit" className="btn btn-danger" onClick={deleteTask()} value="Delete Task" hidden={authuser.role !== "MANAGER" || importTask.status !== "COMPLETED"} />
+                            <input type="submit" className="btn btn-danger" onClick={deleteTask} value="Delete Task" hidden={authuser.role !== "MANAGER" || importTask.status !== "COMPLETED"} />
                         </div>
                     </div>
                 </div >
