@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const Profile = () => {
     var authuser = useSelector((state) => state.auth.user);
-    const [toggle, setToggle] = useState(true);
+    const [toggle, setToggle] = useState("Change Password");
     var temp = authuser?.role;
     const [myuser, setMyuser] = useState();
     const [id, setId] = useState("0");
@@ -26,44 +26,43 @@ const Profile = () => {
         }
     }
     var username = authuser?.username;
-    const handleUpdate = async (e) => {       
-            await axios.post(`http://localhost:8080/${temp}`, mydata, {
-                headers: {
-                    'Authorization': `Bearer ${authuser.token}`
-                }
-            }).then(
-                (response) => {
-                    toast.success("Updated Successfully");
-                }, (error) => {
-                    toast.error(error.response.data);
-                }
-            )
-        } 
-        if (temp === "employee") {
-            var mydata = {
-                empId: id,
-                empName: name,
-                empEmail: emailid,
-                empContact: number,
-                empAddress: address,
-                empRole: role,
-                managerId: managerid,
-                empPassword: password
+    const handleUpdate = async (e) => {
+        await axios.post(`http://localhost:8080/${temp}`, mydata, {
+            headers: {
+                'Authorization': `Bearer ${authuser.token}`
             }
-        } else {
-            mydata = {
-                clientId: id,
-                clientName: name,
-                clientEmail: emailid,
-                clientContact: number,
-                clientAddress: address,
-                clientPassword: password
+        }).then(
+            (response) => {
+                toast.success("Updated Successfully");
+            }, (error) => {
+                toast.error(error.response.data);
             }
+        )
+    }
+    if (temp === "employee") {
+        var mydata = {
+            empId: id,
+            empName: name,
+            empEmail: emailid,
+            empContact: number,
+            empAddress: address,
+            empRole: role,
+            managerId: managerid,
+            empPassword: password
         }
-    
+    } else {
+        mydata = {
+            clientId: id,
+            clientName: name,
+            clientEmail: emailid,
+            clientContact: number,
+            clientAddress: address,
+            clientPassword: password
+        }
+    }
+
 
     useEffect(() => {
-        console.log("the toggle is " + toggle);
         if (temp === "employee" || temp === "client") {
             axios.post(`http://localhost:8080/${temp}/mail/${username}`, null, {
                 headers: {
@@ -91,7 +90,10 @@ const Profile = () => {
                     }
                     console.log(response)
                 }
-            )
+            ).catch((error)=>{
+                toast.error(error.response.data);
+            })
+            
         }
     }, [])
     const handleCompare = () => {
@@ -107,48 +109,64 @@ const Profile = () => {
             document.getElementById("validFeedback").innerHTML = "password doosent match";
         }
     }
+    var user = {
+        username: authuser.username,
+        password: password,
+        role: authuser.role
+    }
 
     const updatePassword = () => {
-                
-
-
-        setPassword(newPassword);
-        handleUpdate();
+        axios.post(`http://localhost:8080/login/authenticate`, user,
+        ).then(
+            (response) => {
+                console.log(response);
+                if (response.data === true) {
+                    setPassword(newPassword);
+                    handleUpdate();
+                }
+            }
+        ).catch((error)=>{
+            toast.error(error.response.data);
+        })
     }
 
     const toggleVar = () => {
-        if (toggle === true) {
-            setToggle(false);
+        if (toggle === "Back") {
+            setToggle("Change Password");
         } else {
-            setToggle(true);
+            setToggle("Back");
         }
     }
 
-
     return (
         <div >
-            <div className="container py-1  align-items-center justify-content-center">
-                <div className="col-lg-12  align-items-center justify-content-center text-center" >
-                    <div className="card mb-2">
+            <div className="container py-1  ">
+                <div className="row col-lg-12" >
+                    <div className="card mb-1">
                         <div className="card-body text-center">
-                            <h5 className="my-0">{myuser?.empName || myuser?.clientName}</h5>
-                            <p className="text-muted mb-0">({authuser.role})</p>
-
+                            <div style={{ "fontWeight": "bold", "float": "right" }}>
+                                <input type="button" className="form-control btn btn-info " value={toggle} onClick={() => { toggleVar() }} style={{ "fontWeight": "bold", "float": "right" }} />
+                            </div>
+                            <div className='' style={{ "margin": "auto", "width": 200, "float": "center" }}>
+                                <h5 className="my-0 col-sm-9 d-inline">{myuser?.empName || myuser?.clientName}</h5>
+                                <br />
+                                <p className="text-muted mb-0 col-sm-9 d-inline">({authuser.role})</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {
-                    toggle ?
+                    toggle === "Change Password" ?
                         <div className="col-lg-12">
                             <div className="card">
                                 <div className="card-body">
                                     <form onSubmit={handleUpdate}>
                                         <div className="row justify-content-center" hidden={myuser?.empRole === "ADMIN"} >
-                                            <div className="col-sm-1">
+                                            <div className="col-sm-1 ">
                                                 <p className="mb-0">Id</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" value={myuser?.empId || myuser?.clientId}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empId || myuser?.clientId}></input>
                                             </div>
                                         </div>
                                         <hr hidden={myuser?.empRole === "ADMIN"} />
@@ -157,7 +175,7 @@ const Profile = () => {
                                                 <p className="mb-0"  >Name</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" value={myuser?.empName || myuser?.clientName}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empName || myuser?.clientName}></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -166,7 +184,7 @@ const Profile = () => {
                                                 <p className="mb-0">Email</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" value={myuser?.empEmail || myuser?.clientEmail}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empEmail || myuser?.clientEmail}></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -175,7 +193,7 @@ const Profile = () => {
                                                 <p className="mb-0">Role</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" value={myuser?.empRole}></input>
+                                                <input className="text-muted mb-0" defaultValue={myuser?.empRole}></input>
                                             </div>
                                         </div>
                                         <hr hidden={temp === "client"} />
@@ -187,7 +205,7 @@ const Profile = () => {
                                                         <p className="mb-0">Manager ID</p>
                                                     </div>
                                                     <div className="col-sm-2">
-                                                        <input className="text-muted mb-0" value={myuser?.managerId}></input>
+                                                        <input className="text-muted mb-0" defaultValue={myuser?.managerId}></input>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -216,9 +234,7 @@ const Profile = () => {
                                             <div className="col-sm-6" style={{ "margin": "auto", "width": 200 }}>
                                                 <input type="submit" className="form-control btn btn-info" value="Update" style={{ "fontWeight": "bold" }} />
                                             </div>
-                                            <div className="col-sm-6" style={{ "margin": "auto", "width": 200 }}>
-                                                <input type="button" className="form-control btn btn-info" value="Change Password" onClick={() =>{ toggleVar()}} style={{ "fontWeight": "bold" }} />
-                                            </div>
+
                                         </div>
                                     </form>
                                 </div>
@@ -230,8 +246,8 @@ const Profile = () => {
                                 <div className="card-body">
                                     <form>
                                         <div className="row justify-content-center"  >
-                                            <div className="col-sm-1">
-                                                <p className="mb-0">Current Password</p>
+                                            <div className="col-sm-2">
+                                                <p className="mb-0" onChange={(e) => setPassword(e.target.value)}>Current Password</p>
                                             </div>
                                             <div className="col-sm-2">
                                                 <input type='password' className="text-muted mb-0" ></input>
@@ -239,7 +255,7 @@ const Profile = () => {
                                         </div>
                                         <hr />
                                         <div className="row justify-content-center"  >
-                                            <div className="col-sm-1">
+                                            <div className="col-sm-2">
                                                 <p className="mb-0">New Password</p>
                                             </div>
                                             <div className="col-sm-2">
@@ -248,7 +264,7 @@ const Profile = () => {
                                         </div>
                                         <hr />
                                         <div className="row justify-content-center"  >
-                                            <div className="col-sm-1">
+                                            <div className="col-sm-2">
                                                 <p className="mb-0">Confirm Password</p>
                                             </div>
                                             <div className="col-sm-2">
@@ -257,14 +273,10 @@ const Profile = () => {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row justify-content-between">
+                                        <div className="row justify-content-center">
                                             <div className="col-sm-6" style={{ "margin": "auto", "width": 200 }}>
-                                                <input type="submit" className="form-control btn btn-info" value="Update" style={{ "fontWeight": "bold" }}
+                                                <input type="submit" className="form-control btn btn-info" value="Change Password" style={{ "fontWeight": "bold" }}
                                                     onClick={() => { toggleVar(); updatePassword() }} />
-                                            </div>
-                                            <div className="col-sm-6  justify-content-end" style={{ "margin": "auto", "width": 200 }}>
-                                                <input type="submit" className="form-control btn btn-info " value="Back" style={{ "fontWeight": "bold" }}
-                                                    onClick={() => { toggleVar();}} />
                                             </div>
                                         </div>
                                     </form>

@@ -89,7 +89,7 @@ const Createlogin = () => {
     }
 
     const getEmp = async () => {
-        await axios.post(`http://localhost:8080/employee/role/MANAGER`, {
+        await axios.post(`http://localhost:8080/employee/role/MANAGER`, null,{
             headers: {
                 'Authorization': `Bearer ${authuser?.token}`
             }
@@ -157,7 +157,7 @@ const Createlogin = () => {
                             {
                                 manager.map((manag, key) => (
 
-                                    <option value={manag.empId}>{manag.empEmail}</option>
+                                    <option value={manag.empId}>{manag.empName}</option>
                                 ))
                             }
                         </select>

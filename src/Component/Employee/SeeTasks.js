@@ -14,22 +14,38 @@ const SeeTasks = () => {
     useEffect(() => {
         getTasks();
         getEmp();
-        console.log(importState);
     }, [authuser, importState, temp]);
 
     var getTasks = async () => {
         var temprole = authuser.role;
         temprole = temprole.toLowerCase();
-        await axios.post(`http://localhost:8080/task/${temprole}/${authuser.id}/${importState}`, null, {
-            headers: {
-                'Authorization': `Bearer ${authuser?.token}`
-            }
-        }).then(
-            (response) => {
-                setTasks(response.data);
-            }, (error) => {
-                console.log(error);
-            });
+
+        if (importState === "NEW")
+        {
+            await axios.get(`http://localhost:8080/task`, {
+                headers: {
+                    'Authorization': `Bearer ${authuser?.token}`
+                }
+            }).then(
+                (response) => {
+                  var allTasks= response.data.filter(tasks=> tasks.status === "NEW");
+                  setTasks(allTasks);
+                }, (error) => {
+                    console.log(error);
+                });
+        }else {
+            await axios.post(`http://localhost:8080/task/${temprole}/${authuser.id}/${importState}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${authuser?.token}`
+                }
+            }).then(
+                (response) => {
+                    setTasks(response.data);
+                    console.log(response.data);
+                }, (error) => {
+                    console.log(error);
+                });
+        }
     }
 
     const changeState = async (tk, st) => {
@@ -93,7 +109,7 @@ const SeeTasks = () => {
                         <th scope="col">Description</th>
                         <th scope="col">Status</th>
                         <th scope="col" className='text-center'>See Details</th>
-                        <th className='text-center' hidden={!(authuser.role === "EMPLOYEE" && importState === "INPROCESS") && !(authuser.role === "MANAGER" && importState === "REVIEW")}>
+                        <th className='text-center' hidden={!(authuser.role === "EMPLOYEE" && (importState === "INPROCESS" || importState === "AUI")) && !(authuser.role === "MANAGER" && importState === "REVIEW")}>
                             Update Status</th>
                         <th className='text-center' scope="col" hidden={importState !== "NEW" || authuser.role !== "MANAGER"}>Assign Task</th>
                     </tr>
@@ -107,10 +123,10 @@ const SeeTasks = () => {
                                 <td>{tk.desc}</td>
                                 <td>{tk.status}</td>
                                 <td className='text-center'><button type="button" className="btn btn-info" onClick={() => getTaskDetails(tk)} >Task Details</button></td>
-                                <td className='text-center' hidden={!(authuser.role === "EMPLOYEE" && importState === "INPROCESS") && !(authuser.role === "MANAGER" && importState === "REVIEW")}>
-                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "REVIEW")} hidden={authuser.role !== "EMPLOYEE" || importState === "REVIEW"} >Mark Review</button>
-                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "AUI")} hidden={authuser.role !== "EMPLOYEE" || importState === "REVIEW"} >AUI</button>
-                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "INPROCESS")} hidden={authuser.role !== "MANAGER" || !(importState === "REVIEW")} >Inprocess</button>
+                                <td className='text-center' hidden={!(authuser.role === "EMPLOYEE" && (importState === "INPROCESS" || importState === "AUI")) && !(authuser.role === "MANAGER" && importState === "REVIEW")}>
+                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "REVIEW")} hidden={authuser.role !== "EMPLOYEE" || importState === "REVIEW" || importState === "AUI"} >Mark Review</button>
+                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "AUI")} hidden={authuser.role !== "EMPLOYEE" || importState === "REVIEW"  || importState === "AUI" } >AUI</button>
+                                    <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "INPROCESS")}  hidden={!(authuser.role === "EMPLOYEE" && importState === "AUI") && !(authuser.role === "MANAGER" && importState === "REVIEW")} >Inprocess</button>
                                     <button type="button" className="btn btn-info" style={{ marginRight: "15px" }} onClick={() => changeState(tk, "COMPLETED")} hidden={authuser.role !== "MANAGER" || importState === "AUI"} >Completed</button>
                                 </td>
                                 <td className='text-center' hidden={importState !== "NEW" || authuser.role !== "MANAGER"}>

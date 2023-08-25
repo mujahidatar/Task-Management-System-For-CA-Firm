@@ -64,7 +64,6 @@ export const Mycomp = () => {
                             <Route path="/" element={<Mylogin />}></Route>
                             <Route path="*" element={<Mylogin isError={true} />}></Route>
                         </Routes>
-
                 }
             </BrowserRouter>
         </div>

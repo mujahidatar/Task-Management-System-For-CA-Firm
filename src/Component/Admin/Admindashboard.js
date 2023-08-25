@@ -26,11 +26,7 @@ const Admindashboard = () => {
     return (
         <div>
             <ToastContainer />
-            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-info text-white" style={{
-                position: 'sticky',
-                top: 0,
-                zIndex: 100
-            }}>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-info text-white">
                 <div className="container-fluid">
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">

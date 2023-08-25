@@ -3,9 +3,11 @@ import "./TaskDetails.css"
 import { useLocation, useNavigate } from 'react-router-dom';
 import Chat from '../Chat';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const TaskDetails = () => {
     const location = useLocation();
+    const authuser=useSelector((state)=>state.auth.user);
     const importTask = location.state?.task;
     console.log("in the taskdetails" + location.state?.task.timeStamp);
     var dt;
@@ -16,9 +18,7 @@ const TaskDetails = () => {
         console.log("timestamp is changed to" + importTask.timeStamp + "  " + dateOfCreation)
 
     })
-
-    // var dateOfCreation = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
-    console.log("timestamp is changed to" + importTask.timeStamp + "  ")
+    
     const user = useSelector((state) => state.auth.user)
     const navigate = useNavigate();
     const backTrack = () => {
@@ -28,7 +28,17 @@ const TaskDetails = () => {
             navigate("/home");
         }
     }
-
+    const deleteTask = () => {
+        axios.delete(`http://localhost:8080/task/${importTask.taskId}`, {
+            headers: {
+               Authorization: `Bearer ${authuser.token}`
+            }
+        }).then(
+            (response)=>{
+                console.log(response.data);
+            }
+        )
+    }
     return (
         <div className='container mt-5'>
             <div className="myrow">
@@ -44,8 +54,11 @@ const TaskDetails = () => {
                     }
 
                     <div className="row mb-3 mt-auto" >
-                        <div className="col-sm-10">
+                        <div className="col-sm-6 d-flex justify-content-start " >
                             <input type="submit" className="btn btn-info" onClick={backTrack} value="Back" />
+                        </div>
+                        <div className="col-sm-6 d-flex justify-content-start " >
+                            <input type="submit" className="btn btn-danger" onClick={deleteTask()} value="Delete Task" hidden={user.role !== "MANAGER" || importTask.status !== "COMPLETED"} />
                         </div>
                     </div>
                 </div >

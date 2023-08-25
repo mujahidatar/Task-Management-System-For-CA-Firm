@@ -7,7 +7,7 @@ import { login } from '../../Services/Actions/Authenticationaction';
 const Managerdashboard = () => {
 
     var user = useSelector((state) => state.auth.user);
-    const dispatch = useDispatch();   
+    const dispatch = useDispatch();
     var flag = user?.flag;
     useEffect(() => {
         toastSuccess();
@@ -27,7 +27,11 @@ const Managerdashboard = () => {
     return (
         <div>
             <ToastContainer />
-            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-info text-white">
+            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-info text-white" style={{
+                "position": 'sticky',
+                "top": 0, 
+                "zIndex": 100
+            }}>
                 <div className="container-fluid">
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">
@@ -48,6 +52,10 @@ const Managerdashboard = () => {
                             </li>
                             <li>
                                 <Link className="nav-link  text-white" to="/seetasks" state="REVIEW" >Review</Link>
+
+                            </li>
+                            <li>
+                                <Link className="nav-link  text-white" to="/seetasks" state="COMPLETED" >Cpmpleted</Link>
 
                             </li>
                             <li>
