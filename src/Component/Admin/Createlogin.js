@@ -1,14 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { logout } from '../../Services/Actions/Authenticationaction';
 
 const Createlogin = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [manager, setManager] = useState([]);
-    const authuser = useSelector((state) => state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
+    const [manager,setManager]=useState([]);
     const [id, setId] = useState("0");
     const [name, setName] = useState("");
     const [emailid, setEmailid] = useState("");
@@ -17,7 +18,15 @@ const Createlogin = () => {
     const [role, setRole] = useState("");
     const [managerid, setManagerid] = useState("");
     const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    var temp = 0;
+    const importemp = location.state?.emp || formdata;
+    var mybtn = "Create";
 
+    if (location.state) {
+        var temp = true;
+        mybtn = "Update";
+    }
 
     var formdata = {
         empId: id,
@@ -29,23 +38,41 @@ const Createlogin = () => {
         managerId: managerid,
         empPassword: password
     }
-    const importemp = location.state?.emp || formdata;
-    var mybtn = "Create"
-    if (location.state) {
-        var temp = true;
-        mybtn = "Update";
-    }
+
+
     useEffect(() => {
-        setId(importemp.empId);
-        setName(importemp.empName);
-        setEmailid(importemp.empEmail);
-        setNumber(importemp.empContact);
-        setAddress(importemp.empAddress);
-        setRole(importemp.empRole);
-        setManagerid(importemp.managerId);
-        setPassword(importemp.empPassword);
-        getEmp();
+        if (temp < 1) {
+            checkToken();
+            temp++;
+        }
+        setId(importemp?.empId);
+        setName(importemp?.empName);
+        setEmailid(importemp?.empEmail);
+        setNumber(importemp?.empContact);
+        setAddress(importemp?.empAddress);
+        setRole(importemp?.empRole);
+        setManagerid(importemp?.managerId);
+        setPassword(importemp?.empPassword);     
     }, [importemp]);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken", {
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        }).catch((error) => {
+            console.log("in catch " + error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/", { state: { err } });
+
+        });
+    }
+
     const createlogindetails = async (event) => {
         event.preventDefault();
         formdata = {

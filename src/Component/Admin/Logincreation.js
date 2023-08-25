@@ -4,11 +4,11 @@ import Createlogin from './Createlogin'
 import Createclient  from './Createclient';
 
 
-export const Logincreation = () => {    
+export const Logincreation = () => {   
     const [tab, setTab] = useState(0);
     const [emp,setEmp] = useState(true);
     const [cli,setCli] = useState(false);
-    
+
     const empHandle = (event) =>{
         event.preventDefault();
         setEmp(true);
@@ -21,6 +21,7 @@ export const Logincreation = () => {
         setCli(true);
         setTab(1);
     }
+   
     return (
         <div className='center container'>
             <Link to="" type="button" className={`btn bg-transparent fs-6 mx-3 ${emp ? 'fw-bold' : 'fw-normal'}`} onClick={empHandle}>Employee</Link>

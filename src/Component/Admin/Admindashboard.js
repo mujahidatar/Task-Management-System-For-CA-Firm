@@ -26,7 +26,7 @@ const Admindashboard = () => {
     return (
         <div>
             <ToastContainer />
-            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-info text-white">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-info text-white">
                 <div className="container-fluid">
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav d-flex align-items-center fs-6">

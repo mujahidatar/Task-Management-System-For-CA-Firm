@@ -1,26 +1,41 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { logout } from '../Services/Actions/Authenticationaction';
 
 const Home = () => {
-    const authuser = useSelector((state) => state.auth.user);
+    var authuser = useSelector((state) => state.auth.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [tasks, setTasks] = useState([]);
     var temp = 0;
-
+    
     useEffect(() => {
-        if (authuser === null && temp < 1) {
-            toast.error("Login Please");
-            navigate("/");
-            temp++;
-        } else if (authuser !== null) {
+         if (temp<1) {
+            checkToken();
             myrender();
+            temp++;
         }
     }, []);
 
-
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
+        });
+    }
 
     const myrender = () => {
         var temprole = authuser?.role;

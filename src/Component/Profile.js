@@ -1,12 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { logout } from '../Services/Actions/Authenticationaction';
 
 const Profile = () => {
     var authuser = useSelector((state) => state.auth.user);
     const [toggle, setToggle] = useState("Change Password");
-    var temp = authuser?.role;
+    const navigate = useNavigate();
+    var authRole = authuser?.role;
     const [myuser, setMyuser] = useState();
     const [id, setId] = useState("0");
     const [name, setName] = useState("");
@@ -16,18 +19,21 @@ const Profile = () => {
     const [role, setRole] = useState("");
     const [managerid, setManagerid] = useState("");
     const [password, setPassword] = useState("");
+    var username = authuser?.username;
+    var temp = 0;
+    const dispatch = useDispatch();
     var newPassword;
-    if (temp) {
-        if (temp === "CLIENT") {
-            temp = "client";
+    if (authRole) {
+        if (authRole === "CLIENT") {
+            authRole = "client";
         }
         else {
-            temp = "employee";
+            authRole = "employee";
         }
     }
-    var username = authuser?.username;
+
     const handleUpdate = async (e) => {
-        await axios.post(`http://localhost:8080/${temp}`, mydata, {
+        await axios.post(`http://localhost:8080/${authRole}`, mydata, {
             headers: {
                 'Authorization': `Bearer ${authuser.token}`
             }
@@ -39,7 +45,7 @@ const Profile = () => {
             }
         )
     }
-    if (temp === "employee") {
+    if (authRole === "employee") {
         var mydata = {
             empId: id,
             empName: name,
@@ -63,39 +69,61 @@ const Profile = () => {
 
 
     useEffect(() => {
-        if (temp === "employee" || temp === "client") {
-            axios.post(`http://localhost:8080/${temp}/mail/${username}`, null, {
-                headers: {
-                    'Authorization': `Bearer ${authuser.token}`
-                }
-            }).then(
-                (response) => {
-                    setMyuser(response.data);
-                    if (temp === "employee") {
-                        setNumber(response.data.empContact);
-                        setAddress(response.data.empAddress);
-                        setId(response.data.empId);
-                        setName(response.data.empName);
-                        setEmailid(response.data.empEmail);
-                        setRole(response.data.empRole);
-                        setManagerid(response.data.managerId);
-                        setPassword(response.data.empPassword);
-                    } else {
-                        setId(response.data.clientId);
-                        setName(response.data.clientName);
-                        setEmailid(response.data.clientEmail);
-                        setNumber(response.data.clientContact);
-                        setAddress(response.data.clientAddress);
-                        setPassword(response.data.clientPassword);
+        if (temp < 1) {
+            checkToken();
+            if (authRole === "employee" || authRole === "client") {
+                axios.post(`http://localhost:8080/${authRole}/mail/${username}`, null, {
+                    headers: {
+                        'Authorization': `Bearer ${authuser.token}`
                     }
-                    console.log(response)
-                }
-            ).catch((error)=>{
-                toast.error(error.response.data);
-            })
-            
+                }).then(
+                    (response) => {
+                        setMyuser(response.data);
+                        if (authRole === "employee") {
+                            setNumber(response.data.empContact);
+                            setAddress(response.data.empAddress);
+                            setId(response.data.empId);
+                            setName(response.data.empName);
+                            setEmailid(response.data.empEmail);
+                            setRole(response.data.empRole);
+                            setManagerid(response.data.managerId);
+                            setPassword(response.data.empPassword);
+                        } else {
+                            setId(response.data.clientId);
+                            setName(response.data.clientName);
+                            setEmailid(response.data.clientEmail);
+                            setNumber(response.data.clientContact);
+                            setAddress(response.data.clientAddress);
+                            setPassword(response.data.clientPassword);
+                        }
+                        console.log(response)
+                    }
+                ).catch((error) => {
+                    toast.error(error.response.data);
+                })
+            }
+            temp++;
         }
-    }, [])
+    }, []);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken", {
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        }).catch((error) => {
+            console.log("in catch " + error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/", { state: { err } });
+
+        });
+    }
+
     const handleCompare = () => {
         console.log("onchange called")
         newPassword = document.getElementById("newpassword");
@@ -125,7 +153,7 @@ const Profile = () => {
                     handleUpdate();
                 }
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             toast.error(error.response.data);
         })
     }
@@ -188,7 +216,7 @@ const Profile = () => {
                                             </div>
                                         </div>
                                         <hr />
-                                        <div className="row justify-content-center" hidden={temp === "client"}>
+                                        <div className="row justify-content-center" hidden={authRole === "client"}>
                                             <div className="col-sm-1">
                                                 <p className="mb-0">Role</p>
                                             </div>
@@ -196,9 +224,9 @@ const Profile = () => {
                                                 <input className="text-muted mb-0" defaultValue={myuser?.empRole}></input>
                                             </div>
                                         </div>
-                                        <hr hidden={temp === "client"} />
+                                        <hr hidden={authRole === "client"} />
                                         {
-                                            (temp !== "client" && myuser?.empRole === "EMPLOYEE") &&
+                                            (authRole !== "client" && myuser?.empRole === "EMPLOYEE") &&
                                             <>
                                                 <div className="row justify-content-center">
                                                     <div className="col-sm-1">

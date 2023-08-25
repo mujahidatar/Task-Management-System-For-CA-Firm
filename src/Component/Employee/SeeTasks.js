@@ -1,23 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../Services/Actions/Authenticationaction';
 const SeeTasks = () => {
     const [temp, setTemp] = useState(0);
     const [emp, SetEmp] = useState([]);
-    const authuser = useSelector((state) => state.auth.user);
     const [tasks, setTasks] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
     var importState = location.state;
+    var authuser = useSelector((state) => state.auth.user);
+    var tempVar = 0;
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        getTasks();
-        getEmp();
+        if (tempVar < 1) {
+            checkToken();
+            getTasks();
+            getEmp();
+            console.log(importState);
+            tempVar++;
+        }
     }, [authuser, importState, temp]);
 
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken",{
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        } ).catch((error) => {
+            console.log("in catch "+error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/",{state:{err}});
+            
+        });
+    }
+
     var getTasks = async () => {
-        var temprole = authuser.role;
+        var temprole = authuser?.role;
         temprole = temprole.toLowerCase();
 
         if (importState === "NEW")

@@ -22,13 +22,19 @@ import Profile from './Profile'
 export const Mycomp = () => {
     const [user, setUser] = useState();
     const authuser = useSelector((state) => state.auth.user);
+    var temp = 0;
     useEffect(() => {
-        setUser(authuser);
+        if (temp < 1) {
+            setUser(authuser);
+            //console.log("in my comp")
+            temp++;
+        }
     }, [authuser]);
 
     return (
         <div>
             <BrowserRouter >
+
                 {
                     user && user.role === "ADMIN" && <Admindashboard />
                 }
@@ -61,8 +67,8 @@ export const Mycomp = () => {
                             <Route path="profile" element={<Profile />}></Route>
                         </Routes> :
                         <Routes >
-                            <Route path="/" element={<Mylogin />}></Route>
-                            <Route path="*" element={<Mylogin isError={true} />}></Route>
+                            <Route path="/" element={<Mylogin msg={"new"} />}></Route>
+                            <Route path="*" element={<Mylogin isError={true} msg={"Please Login First"} />}></Route>
                         </Routes>
                 }
             </BrowserRouter>

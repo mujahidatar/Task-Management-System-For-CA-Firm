@@ -1,11 +1,18 @@
 import React from 'react'
 import axios from "axios"
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { logout } from '../../Services/Actions/Authenticationaction';
 export const Assignedtasks = (props) => {
     const [assignedtasks, setAssignedtasks] = ([]);
-    const authuser = useSelector((state) => state.auth.user);
-    getassignedtasks = () => {
+    const navigate = useNavigate();
+    var authuser = useSelector((state) => state.auth.user);
+    var temp = 0;
+    const dispatch = useDispatch();
+
+
+    const getassignedtasks = () => {
         axios.get(`http//localhost:8080/tasks`, null, {
             headers: {
                 'Authorization': `Bearer ${authuser.token}`
@@ -18,8 +25,31 @@ export const Assignedtasks = (props) => {
     }
 
     useEffect(() => {
-        getassignedtasks();
-    })
+        if (temp < 1) {
+            checkToken();
+            getassignedtasks();
+            temp++
+        }
+    }, []);
+
+    const checkToken = async () => {
+        await axios.get("http://localhost:8080/login/checkToken", {
+            headers: {
+                'Authorization': `Bearer ${authuser?.token}`
+            }
+        }).then((response) => {
+            console.log(response)
+            // navigate(-1);
+            return;
+        }).catch((error) => {
+            console.log("in catch " + error.response?.data);
+            const err = error.response?.data;
+            dispatch(logout());
+            navigate("/", { state: { err } });
+
+        });
+    }
+
     return (
         <div>
             <table className="table table-striped table-bordered table-hover" style={{ "border": "2px solid skyblue", "backgroundColor": "#C9E5FF" }}>
