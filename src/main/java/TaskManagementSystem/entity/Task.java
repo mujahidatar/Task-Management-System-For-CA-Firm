@@ -1,5 +1,7 @@
 package TaskManagementSystem.entity;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,10 +22,11 @@ public class Task {
 	private int managerId;
 	private int employeeId;
 	private Status status;
+	private LocalDateTime timeStamp;
 	
 	public Task() {}
 
-	public Task(int taskId, String title, String desc, int clientId, int managerId, int employeeId, Status status) {
+	public Task(int taskId, String title, String desc, int clientId, int managerId, int employeeId, Status status,LocalDateTime timeStamp) {
 		super();
 		this.taskId = taskId;
 		this.title = title;
@@ -32,6 +35,7 @@ public class Task {
 		this.managerId = managerId;
 		this.employeeId = employeeId;
 		this.status = status;
+		this.timeStamp = timeStamp;
 	}
 
 	public int getTaskId() {
@@ -88,6 +92,14 @@ public class Task {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public LocalDateTime getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(LocalDateTime timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 	
 }

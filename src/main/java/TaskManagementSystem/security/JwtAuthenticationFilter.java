@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -56,16 +57,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
             } catch (IllegalArgumentException e) {
                 logger.info("Illegal Argument while fetching the username !!");
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (ExpiredJwtException e) {
                 logger.info("Given jwt token is expired !!");
-                e.printStackTrace();
+                 request.setAttribute("exception", "Your Session Expired! Please Login Again");
+                //e.printStackTrace();
             } catch (MalformedJwtException e) {
                 logger.info("Some changed has done in token !! Invalid Token");
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (Exception e) {
-                e.printStackTrace();
-
+            	logger.info(e.getMessage());
+                //e.printStackTrace();
             }
 
 

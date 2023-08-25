@@ -86,4 +86,9 @@ public class LoginController {
     public ResponseEntity<?> exceptionHandler(BadCredentialsException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+	
+	@GetMapping("/checkToken")
+	public ResponseEntity<?> checkToken() {
+        return ResponseEntity.ok("OK");
+    }
 }

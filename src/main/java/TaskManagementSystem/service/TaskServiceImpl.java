@@ -1,5 +1,6 @@
 package TaskManagementSystem.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,9 @@ import TaskManagementSystem.repository.TaskRepository;
 public class TaskServiceImpl implements TaskService{
 	@Autowired
 	TaskRepository taskRepo;
+	
+	@Autowired
+	ChatService chatServ;
 
 	@Override
 	public List<Task> findAll() {
@@ -30,6 +34,7 @@ public class TaskServiceImpl implements TaskService{
 
 	@Override
 	public Task save(Task theTask) {
+		theTask.setTimeStamp(LocalDateTime.now());
 		Task task = taskRepo.findFirstByOrderByTaskIdDesc();
 		if(theTask.getTaskId()==0) {
 			if(task!=null)
@@ -42,6 +47,7 @@ public class TaskServiceImpl implements TaskService{
 
 	@Override
 	public void deleteById(int theId) {
+		chatServ.deleteByTaskId(theId);
 		taskRepo.deleteById(theId);
 	}
 
