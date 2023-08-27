@@ -13,5 +13,5 @@ public interface DocumentService {
 	public FileDocument save(MultipartFile theFile, int theId)throws IOException;
 	public void deleteById(String theId);
 	public void deleteByTaskId(int theId);
-	public List<FileDocument> findByTaskId(int theId);
+	public FileDocument findByTaskId(int theId);
 }

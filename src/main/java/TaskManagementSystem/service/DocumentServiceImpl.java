@@ -51,7 +51,7 @@ public class DocumentServiceImpl implements DocumentService{
 	}
 
 	@Override
-	public List<FileDocument> findByTaskId(int theId) {
+	public FileDocument findByTaskId(int theId) {
 		return docRepo.findByTaskId(theId);
 	}
 

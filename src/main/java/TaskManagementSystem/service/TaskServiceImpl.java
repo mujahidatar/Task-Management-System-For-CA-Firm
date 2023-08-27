@@ -18,6 +18,9 @@ public class TaskServiceImpl implements TaskService{
 	
 	@Autowired
 	ChatService chatServ;
+	
+	@Autowired
+	DocumentService docServ;
 
 	@Override
 	public List<Task> findAll() {
@@ -48,6 +51,7 @@ public class TaskServiceImpl implements TaskService{
 	@Override
 	public void deleteById(int theId) {
 		chatServ.deleteByTaskId(theId);
+		docServ.deleteByTaskId(theId);
 		taskRepo.deleteById(theId);
 	}
 

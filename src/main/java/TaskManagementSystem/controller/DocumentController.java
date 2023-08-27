@@ -29,7 +29,7 @@ public class DocumentController {
 		return ResponseEntity.ok(docServ.findAll());
 	}
 	
-	@PostMapping("task/{theId}")
+	@PostMapping("/download/{theId}")
 	public ResponseEntity<?> getDocByTaskId(@PathVariable int theId){
 		return ResponseEntity.ok(docServ.findByTaskId(theId));
 	}

@@ -9,7 +9,7 @@ import TaskManagementSystem.entity.FileDocument;
 
 public interface DocumentRepository extends MongoRepository<FileDocument, String>{
 	
-	List<FileDocument> findByTaskId(int theId);
+	FileDocument findByTaskId(int theId);
 	
 	@Query(value="{ taskId : ?0 }",delete=true)
 	void deleteByTaskId(int theId);
