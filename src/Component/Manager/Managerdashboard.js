@@ -55,7 +55,7 @@ const Managerdashboard = () => {
 
                             </li>
                             <li>
-                                <Link className="nav-link  text-white" to="/seetasks" state="COMPLETED" >Cpmpleted</Link>
+                                <Link className="nav-link  text-white" to="/seetasks" state="COMPLETED" >Completed</Link>
 
                             </li>
                             <li>

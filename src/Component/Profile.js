@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { logout } from '../Services/Actions/Authenticationaction';
-import { async } from 'q';
 
 const Profile = () => {
     var authuser = useSelector((state) => state.auth.user);
@@ -60,6 +59,8 @@ const Profile = () => {
     useEffect(() => {
         if (temp < 1) {
             checkToken();
+            temp++;
+        }
             if (authRole === "employee" || authRole === "client") {
                 axios.post(`http://localhost:8080/${authRole}/mail/${username}`, null, {
                     headers: {
@@ -91,9 +92,7 @@ const Profile = () => {
                     toast.error(error.response.data);
                 })
             }
-            temp++;
-        }
-    }, []);
+    }, [toggle]);
 
     const checkToken = async () => {
         await axios.get("http://localhost:8080/login/checkToken", {
@@ -123,6 +122,9 @@ const Profile = () => {
         }).then(
             (response) => {
                 toast.success("Password Updated Successfully");
+                document.getElementById("newpassword").value="";
+                document.getElementById("confirmpassword").value="";
+                document.getElementById("oldPassword").value="";
                 toggleVar();
             }, (error) => {
                 toast.error(error.response.data);
@@ -199,7 +201,7 @@ const Profile = () => {
                             <div style={{ "margin": "auto", "width": 200, "float": "center" }}>
                                 <h5 className="my-0 col-sm-9 d-inline">{myuser?.empName || myuser?.clientName}</h5>
                                 <br />
-                                <p className="text-muted mb-0 col-sm-9 d-inline">({authuser.role})</p>
+                                <p className="text-muted mb-0 col-sm-9 d-inline">({authuser?.role})</p>
                             </div>
                         </div>
                     </div>
@@ -224,7 +226,7 @@ const Profile = () => {
                                                 <p className="mb-0"  >Name</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empName || myuser?.clientName} readOnly></input>
+                                                <input className="text-muted mb-0" defaultValue={name} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -233,7 +235,7 @@ const Profile = () => {
                                                 <p className="mb-0">Email</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empEmail || myuser?.clientEmail} readOnly></input>
+                                                <input className="text-muted mb-0" defaultValue={emailid} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -299,7 +301,7 @@ const Profile = () => {
                                                 <p className="mb-0" >Current Password</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input type='password' className="text-muted mb-0" onChange={(e) => setPassword(e.target.value)}></input>
+                                                <input type='password' id="oldPassword" className="text-muted mb-0" onChange={(e) => setPassword(e.target.value)}></input>
                                             </div>
                                         </div>
                                         <hr />

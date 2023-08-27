@@ -105,7 +105,7 @@ export default function Mylogin({ isError, msg }) {
                     <div className="row mb-3 justify-content-center">
                         <label htmlFor="password" className="col-sm-2 col-form-label " style={{ "width": 150, "fontWeight": 'bold' }}>Enter Password</label>
                         <div className="col-sm-10" style={{ "width": 400 }}>
-                            <input type="text" className="form-control form-control-sm" id="password" placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }} />
+                            <input type="password" className="form-control form-control-sm" id="password" placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value) }} />
                         </div>
                     </div>
                     <div className="row mb-3 justify-content-center">
