@@ -122,9 +122,6 @@ const Profile = () => {
         }).then(
             (response) => {
                 toast.success("Password Updated Successfully");
-                document.getElementById("newpassword").value="";
-                document.getElementById("confirmpassword").value="";
-                document.getElementById("oldPassword").value="";
                 toggleVar();
             }, (error) => {
                 toast.error(error.response.data);
@@ -212,12 +209,13 @@ const Profile = () => {
                             <div className="card">
                                 <div className="card-body">
                                     <form onSubmit={handleUpdate}>
+                                        <input hidden='true'></input>
                                         <div className="row justify-content-center" hidden={myuser?.empRole === "ADMIN"} >
                                             <div className="col-sm-1 ">
                                                 <p className="mb-0">Id</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empId || myuser?.clientId} readOnly></input>
+                                                <input className="text-muted mb-0" name='id' defaultValue={myuser?.empId || myuser?.clientId} readOnly></input>
                                             </div>
                                         </div>
                                         <hr hidden={myuser?.empRole === "ADMIN"} />
@@ -226,7 +224,7 @@ const Profile = () => {
                                                 <p className="mb-0"  >Name</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={name} readOnly></input>
+                                                <input className="text-muted mb-0" name='name' defaultValue={name} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -235,7 +233,7 @@ const Profile = () => {
                                                 <p className="mb-0">Email</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={emailid} readOnly></input>
+                                                <input className="text-muted mb-0" name='email' defaultValue={emailid} readOnly></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -244,7 +242,7 @@ const Profile = () => {
                                                 <p className="mb-0">Role</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input className="text-muted mb-0" defaultValue={myuser?.empRole} readOnly></input>
+                                                <input className="text-muted mb-0" name='role' defaultValue={myuser?.empRole} readOnly></input>
                                             </div>
                                         </div>
                                         <hr hidden={authRole === "client"} />
@@ -256,7 +254,7 @@ const Profile = () => {
                                                         <p className="mb-0">Manager ID</p>
                                                     </div>
                                                     <div className="col-sm-2">
-                                                        <input className="text-muted mb-0" defaultValue={myuser?.managerId} readOnly></input>
+                                                        <input className="text-muted mb-0" name='mgrId' defaultValue={myuser?.managerId} readOnly></input>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -268,7 +266,7 @@ const Profile = () => {
                                                 <p className="mb-0">Phone</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input name="name" value={number} onChange={(e) => setNumber(e.target.value)} />
+                                                <input name="phoneNo" defaultValue={number} onChange={(e) => setNumber(e.target.value)} />
                                             </div>
                                         </div>
                                         <hr />
@@ -277,7 +275,7 @@ const Profile = () => {
                                                 <p className="mb-0" >Address</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input name="name" value={address} onChange={(e) => setAddress(e.target.value)} />
+                                                <input name="address" defaultValue={address} onChange={(e) => setAddress(e.target.value)} />
                                             </div>
                                         </div>
                                         <hr />
@@ -301,7 +299,7 @@ const Profile = () => {
                                                 <p className="mb-0" >Current Password</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input type='password' id="oldPassword" className="text-muted mb-0" onChange={(e) => setPassword(e.target.value)}></input>
+                                                <input type='password' name='op' id="oldPassword" className="text-muted mb-0" onChange={(e) => setPassword(e.target.value)}></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -310,7 +308,7 @@ const Profile = () => {
                                                 <p className="mb-0">New Password</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input type='password' id="newpassword" className="text-muted mb-0" ></input>
+                                                <input type='password' name='np' id="newpassword" className="text-muted mb-0" ></input>
                                             </div>
                                         </div>
                                         <hr />
@@ -319,7 +317,7 @@ const Profile = () => {
                                                 <p className="mb-0">Confirm Password</p>
                                             </div>
                                             <div className="col-sm-2">
-                                                <input type='password' id="confirmpassword" className="text-muted mb-0" onChange={(e) => { handleCompare() }} ></input>
+                                                <input type='password' name='cp' id="confirmpassword" className="text-muted mb-0" onChange={(e) => { handleCompare() }} ></input>
                                                 <div className='text-danger' id="validFeedback"></div>
                                             </div>
                                         </div>
